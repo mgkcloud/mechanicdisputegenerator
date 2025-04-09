@@ -44,7 +44,7 @@ export async function POST(request) {
 
     // Consistent filename (without extension)
     const documentKey = result.filename
-    const r2ObjectKey = documentKey + ".html"
+    const r2ObjectKey = documentKey
 
     // Store the HTML document in S3/R2 storage
     await storeDocument(r2ObjectKey, htmlDocument, {
