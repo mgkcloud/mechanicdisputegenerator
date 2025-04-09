@@ -189,3 +189,77 @@
 .backdrop-blur-card {
   @apply bg-white/70 backdrop-blur-md;
 }
+
+/* Custom animations for payment experience */
+@keyframes float {
+  0% {
+    transform: translateY(0px) translateZ(0) rotateX(1deg) rotateY(1deg);
+  }
+  50% {
+    transform: translateY(-10px) translateZ(20px) rotateX(2deg) rotateY(2deg);
+  }
+  100% {
+    transform: translateY(0px) translateZ(0) rotateX(1deg) rotateY(1deg);
+  }
+}
+
+@keyframes reveal {
+  0% {
+    filter: blur(10px);
+    transform: scale(0.95);
+  }
+  100% {
+    filter: blur(0);
+    transform: scale(1);
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.document-preview {
+  perspective: 1000px;
+}
+
+.document-preview-floating {
+  animation: float 6s ease-in-out infinite;
+}
+
+.document-reveal {
+  animation: reveal 1s ease-in-out forwards;
+}
+
+.payment-modal-exit {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+/* 3D card effect for payment form */
+.payment-card {
+  transition: transform 0.3s ease;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.payment-card:hover {
+  transform: translateY(-5px) scale(1.01);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Styles for document blur effect */
+.document-blur {
+  filter: blur(8px);
+  transform: scale(0.97);
+  transition: all 0.5s ease-in-out;
+}
+
+.document-focus {
+  filter: blur(0);
+  transform: scale(1);
+  transition: all 0.5s ease-in-out;
+}

@@ -32,7 +32,7 @@ const STORAGE_KEYS = {
 
 export default function HomePage() {
   const [currentStep, setCurrentStep] = useState(1)
-  const [claimStarted, setClaimStarted] = useState(false)
+  const [claimStarted, setClaimStarted] = useState(true)
   const [errors, setErrors] = useState({})
   const [formTouched, setFormTouched] = useState({})
   const [uploadedFiles, setUploadedFiles] = useState([])
@@ -285,7 +285,7 @@ export default function HomePage() {
 
         // Create checkout session
         const checkoutData = await createCheckoutSession(docData, formData)
-        setClientSecret(checkoutData.id)
+        setClientSecret(checkoutData.sessionId || checkoutData.id)
 
         toast({
           title: "Document generated successfully",
@@ -305,34 +305,53 @@ export default function HomePage() {
       }
     } else if (currentStep === 4) {
       // Process payment before proceeding to download
+      setIsProcessingPayment(true)
       try {
         console.log("Payment step handleNext called, clientSecret:", clientSecret ? "exists" : "missing")
         
-        // Ensure we have a valid client secret before redirecting to Stripe
-        if (!clientSecret) {
-          console.log("No client secret found, regenerating checkout session...")
-          // No client secret available, regenerate checkout session
-          const success = await regenerateCheckoutSession()
-          if (!success) {
-            throw new Error("Failed to prepare payment. Please try again.")
+        // Handle payment for the enhanced UI experience
+        if (process.env.NEXT_PUBLIC_BYPASS_PAYMENT === "true") {
+          // For development mode, bypass payment
+          const paymentResult = await processPayment(documentData, stripePromise, clientSecret, true)
+          shouldProceed = paymentResult
+
+          if (paymentResult) {
+            setPaymentSuccess(true)
+            
+            toast({
+              title: "Payment successful",
+              description: "Your payment has been processed successfully",
+            })
           }
-          console.log("Regenerated client secret:", clientSecret ? "exists" : "still missing")
+        } else {
+          // Ensure we have a valid client secret before redirecting to Stripe
+          if (!clientSecret) {
+            console.log("No client secret found, regenerating checkout session...")
+            // No client secret available, regenerate checkout session
+            const success = await regenerateCheckoutSession()
+            if (!success) {
+              throw new Error("Failed to prepare payment. Please try again.")
+            }
+            console.log("Regenerated client secret:", clientSecret ? "exists" : "still missing")
+          }
+          
+          console.log("Proceeding with payment using clientSecret:", clientSecret)
+          const paymentResult = await processPayment(documentData, stripePromise, clientSecret)
+          shouldProceed = paymentResult
+
+          if (paymentResult) {
+            setPaymentSuccess(true)
+            
+            toast({
+              title: "Payment successful",
+              description: "Your payment has been processed successfully",
+            })
+          }
         }
         
-        console.log("Proceeding with payment using clientSecret:", clientSecret)
-        const paymentResult = await processPayment(documentData, stripePromise, clientSecret)
-        shouldProceed = paymentResult
-
-        if (paymentResult) {
-          setPaymentSuccess(true)
-          
-          // Clear persisted data on successful payment
+        // Clear persisted data on successful payment
+        if (shouldProceed) {
           clearPersistedData()
-          
-          toast({
-            title: "Payment successful",
-            description: "Your payment has been processed successfully",
-          })
         }
       } catch (error) {
         console.error("Payment process error:", error)
@@ -404,12 +423,13 @@ export default function HomePage() {
           console.log("Creating checkout session with regenerated document data...")
           const checkoutData = await createCheckoutSession(docData, formData)
           
-          if (!checkoutData || !checkoutData.id) {
+          if (!checkoutData || (!checkoutData.sessionId && !checkoutData.id)) {
             throw new Error("Invalid checkout session response from server")
           }
           
-          console.log("Successfully obtained new checkout session ID:", checkoutData.id)
-          setClientSecret(checkoutData.id)
+          const sessionId = checkoutData.sessionId || checkoutData.id
+          console.log("Successfully obtained new checkout session ID:", sessionId)
+          setClientSecret(sessionId)
           setIsProcessingPayment(false)
           return true
         } catch (docError) {
@@ -440,12 +460,13 @@ export default function HomePage() {
       console.log("Calling createCheckoutSession API...")
       const checkoutData = await createCheckoutSession(documentData, formData)
       
-      if (!checkoutData || !checkoutData.id) {
+      if (!checkoutData || (!checkoutData.sessionId && !checkoutData.id)) {
         throw new Error("Invalid checkout session response from server")
       }
       
-      console.log("Successfully obtained new checkout session ID:", checkoutData.id)
-      setClientSecret(checkoutData.id)
+      const sessionId = checkoutData.sessionId || checkoutData.id
+      console.log("Successfully obtained new checkout session ID:", sessionId)
+      setClientSecret(sessionId)
       setIsProcessingPayment(false)
       return true
     } catch (error) {
@@ -475,7 +496,6 @@ export default function HomePage() {
 
   // Add a new function to start the claim process
   const startClaim = () => {
-    setClaimStarted(true)
     setCurrentStep(1)
     window.scrollTo(0, 0)
 
@@ -489,7 +509,6 @@ export default function HomePage() {
   const handleStartOver = () => {
     // Reset form fields
     setCurrentStep(1)
-    setClaimStarted(false)
     setErrors({})
     setFormTouched({})
     setUploadedFiles([])
@@ -577,24 +596,10 @@ export default function HomePage() {
     }
   }, [currentStep])
 
-  return (
-    <>
-      {/* Hero Section */}
-      <HeroSection
-        claimStarted={claimStarted}
-        startClaim={startClaim}
-        handleStartOver={handleStartOver}
-        currentStep={currentStep}
-        steps={steps}
-      />
-
-      {/* Main Form Section */}
-      <main className="container py-12">
-        {/* Step Indicator */}
-        {claimStarted && <StepIndicator steps={steps} currentStep={currentStep} goToStep={goToStep} />}
-
-        {/* Step 1: Enter Details */}
-        {currentStep === 1 && (
+  const renderCurrentStep = () => {
+    switch (currentStep) {
+      case 1:
+        return (
           <Step1Details
             formData={formData}
             formTouched={formTouched}
@@ -603,54 +608,76 @@ export default function HomePage() {
             handleInsuranceChange={handleInsuranceChange}
             handleNext={handleNext}
           />
-        )}
-
-        {/* Step 2: Upload Evidence */}
-        {currentStep === 2 && (
+        )
+      case 2:
+        return (
           <Step2Upload
             uploadedFiles={uploadedFiles}
-            errors={errors}
             isUploading={isUploading}
             handleFileSelect={handleFileSelect}
             handleRemoveFile={handleRemoveFile}
             handleBack={handleBack}
             handleNext={handleNext}
+            errors={errors}
             formatFileSize={formatFileSize}
           />
-        )}
-
-        {/* Step 3: Review */}
-        {currentStep === 3 && (
+        )
+      case 3:
+        return (
           <Step3Review
             formData={formData}
             uploadedFiles={uploadedFiles}
             isGenerating={isGenerating}
             handleBack={handleBack}
             handleNext={handleNext}
-            goToStep={goToStep}
+            formatFileSize={formatFileSize}
           />
-        )}
-
-        {/* Step 4: Payment */}
-        {currentStep === 4 && (
+        )
+      case 4:
+        return (
           <Step4Payment
             documentData={documentData}
             isProcessingPayment={isProcessingPayment}
             handleBack={handleBack}
             handleNext={handleNext}
             formatCurrency={formatCurrency}
+            paymentSuccess={paymentSuccess}
           />
-        )}
+        )
+      case 5:
+        return (
+          <Step5Download
+            documentData={documentData}
+            handleBack={handleBack}
+            handleStartOver={handleStartOver}
+          />
+        )
+      default:
+        return <Step1Details formData={formData} formTouched={formTouched} errors={errors} handleInputChange={handleInputChange} />
+    }
+  }
 
-        {/* Step 5: Download */}
-        {currentStep === 5 && <Step5Download documentData={documentData} handleStartOver={handleStartOver} />}
-      </main>
+  return (
+    <main>
+      {/* Hero Section */}
+      <HeroSection 
+        claimStarted={claimStarted} 
+        startClaim={startClaim}
+        handleStartOver={handleStartOver}
+        currentStep={currentStep}
+        steps={steps}
+      />
 
-      {/* Testimonials Section */}
-      <Testimonials />
+      {/* Main Content - Always shown */}
+      <div className="mt-10 sm:mt-16 mb-16 mx-auto px-4 sm:px-6 md:px-8 max-w-4xl">
+        {/* Step Indicator */}
+        <StepIndicator currentStep={currentStep} steps={steps} goToStep={goToStep} />
 
-      {/* CTA Section */}
-      <CTASection startClaim={startClaim} />
-    </>
+        {/* Render Current Step */}
+        <div className="mt-10">
+          {renderCurrentStep()}
+        </div>
+      </div>
+    </main>
   )
 }

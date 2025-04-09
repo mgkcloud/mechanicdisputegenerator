@@ -45,17 +45,22 @@ async function getDocumentMetadata(filename) {
 
 /**
  * Thank You page component
- * @param {Object} params - Route params including filename
+ * Displays a thank you message and document details after successful payment
+ * 
+ * @param {Object} props - Component props
+ * @param {Promise<Object>} props.params - Route params
+ * @param {string} props.params.filename - Document filename
  */
-export default async function ThankYouPage({ params }) {
+export default async function ThankYouPage(props) {
+  const params = await props.params
   const { filename } = params
 
   // Get document metadata
   const metadata = await getDocumentMetadata(filename)
 
-  // URLs for viewing and downloading document
-  const permanentUrl = `/api/documents/${filename}`
-  const downloadUrl = `/api/documents/${filename}?download=true`
+  // URLs for viewing and downloading document - prettier URLs without 'api'
+  const permanentUrl = `/documents/view/${filename}`
+  const downloadUrl = `/documents/download/${filename}`
 
   // Format the date for display
   const date = new Date().toLocaleDateString("en-AU", {

@@ -186,7 +186,7 @@ export default function Step3Review({ formData, uploadedFiles, isGenerating, han
               </>
             ) : (
               <>
-                Continue to Payment
+                Generate Document
                 <ChevronRight className="ml-2 h-4 w-4" />
               </>
             )}

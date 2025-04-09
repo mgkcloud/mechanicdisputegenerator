@@ -3,44 +3,37 @@ import { getDocument } from "@/lib/document-storage"
 import { handleApiError, ApiError } from "@/lib/error-utils"
 
 /**
- * API route to retrieve a document by filename
+ * Route handler for document downloads
  * @param {Request} request - The incoming request
  * @param {Object} context - Context containing params
  * @param {Promise<Object>} context.params - Route params
- * @param {string} context.params.fileName - Document filename
+ * @param {string} context.params.filename - Document filename
  */
 export async function GET(request, context) {
   try {
     const params = await context.params
-    const { fileName } = params
+    const { filename } = params
     
-    const { searchParams } = new URL(request.url)
-    const download = searchParams.get("download") === "true"
-    
-    if (!fileName) {
+    if (!filename) {
       throw new ApiError("Filename is required", 400)
     }
     
     // Retrieve the document from storage
-    const document = await getDocument(fileName)
+    const document = await getDocument(filename)
     
     if (!document) {
       throw new ApiError("Document not found", 404)
     }
     
-    // Set headers based on whether it's a download or not
-    const headers = {
-      "Content-Type": "text/html",
-    }
-    
-    if (download) {
-      headers["Content-Disposition"] = `attachment; filename="${fileName}.html"`
-    }
-    
-    // Return the document HTML with appropriate content type
-    return new NextResponse(document, { headers })
+    // Return the document with headers that will trigger a download
+    return new NextResponse(document, {
+      headers: {
+        "Content-Type": "text/html",
+        "Content-Disposition": `attachment; filename="${filename}.html"`,
+      },
+    })
   } catch (error) {
     const errorResponse = handleApiError(error)
     return NextResponse.json(errorResponse, { status: errorResponse.statusCode })
   }
-}
+} 
