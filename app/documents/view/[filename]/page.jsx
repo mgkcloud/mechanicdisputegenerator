@@ -1,4 +1,5 @@
-import { getDocument } from "@/lib/document-storage"
+import { getDocument, getDocumentMetadata } from "@/lib/document-storage"
+import DocumentViewer from "@/components/document/document-viewer"
 
 /**
  * Document viewer page component
@@ -11,8 +12,9 @@ export default async function ViewDocumentPage(props) {
   const params = await props.params
   const { filename } = params
   
-  // Get the document HTML
+  // Get the document HTML and metadata
   const documentHtml = await getDocument(filename)
+  const metadata = await getDocumentMetadata(`${filename}.html`)
   
   // If no document is found, show an error
   if (!documentHtml) {
@@ -25,11 +27,18 @@ export default async function ViewDocumentPage(props) {
     )
   }
   
-  // Use dangerouslySetInnerHTML to render the document HTML
+  // Extract document metadata from the stored object
+  const customerName = metadata?.metadata?.customerName || "Customer"
+  const documentType = metadata?.metadata?.documentType || "Legal Document"
+  const createdAt = metadata?.metadata?.createdAt || new Date().toISOString()
+  
   return (
-    <div 
-      className="document-container" 
-      dangerouslySetInnerHTML={{ __html: documentHtml }}
+    <DocumentViewer 
+      html={documentHtml}
+      documentName={documentType}
+      customerName={customerName}
+      createdAt={createdAt}
+      filename={filename}
     />
   )
 }

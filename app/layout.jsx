@@ -1,4 +1,5 @@
 import "./globals.css"
+import "@/styles/calendar.css"
 import { Inter } from "next/font/google"
 import Script from "next/script"
 import { Toaster } from "@/components/ui/toaster"

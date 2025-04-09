@@ -1,0 +1,28 @@
+/* Import the default react-day-picker styles */
+@import 'react-day-picker/dist/style.css';
+
+/* Customize calendar styles to match our app theme */
+.rdp {
+  --rdp-accent-color: theme('colors.blue.600');
+  --rdp-background-color: theme('colors.blue.50');
+  margin: 1em 0;
+}
+
+.rdp-day_selected, 
+.rdp-day_selected:focus-visible, 
+.rdp-day_selected:hover {
+  background-color: var(--rdp-accent-color);
+  color: white;
+}
+
+.rdp-button:hover:not([disabled]):not(.rdp-day_selected) {
+  background-color: var(--rdp-background-color);
+}
+
+/* Add subtle shadow to the calendar */
+.rdp-months {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  background-color: white;
+} 

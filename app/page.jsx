@@ -32,7 +32,7 @@ const STORAGE_KEYS = {
 
 export default function HomePage() {
   const [currentStep, setCurrentStep] = useState(1)
-  const [claimStarted, setClaimStarted] = useState(true)
+  const [claimStarted, setClaimStarted] = useState(false)
   const [errors, setErrors] = useState({})
   const [formTouched, setFormTouched] = useState({})
   const [uploadedFiles, setUploadedFiles] = useState([])
@@ -86,6 +86,9 @@ export default function HomePage() {
         const savedClaimStarted = localStorage.getItem(STORAGE_KEYS.CLAIM_STARTED)
         if (savedClaimStarted) {
           setClaimStarted(JSON.parse(savedClaimStarted))
+        } else {
+          // Default to false if not saved
+          setClaimStarted(false)
         }
       } catch (error) {
         console.error("Error loading saved form data:", error)
@@ -496,6 +499,7 @@ export default function HomePage() {
 
   // Add a new function to start the claim process
   const startClaim = () => {
+    setClaimStarted(true)
     setCurrentStep(1)
     window.scrollTo(0, 0)
 
@@ -509,6 +513,7 @@ export default function HomePage() {
   const handleStartOver = () => {
     // Reset form fields
     setCurrentStep(1)
+    setClaimStarted(false)
     setErrors({})
     setFormTouched({})
     setUploadedFiles([])
