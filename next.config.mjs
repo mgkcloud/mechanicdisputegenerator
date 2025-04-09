@@ -56,3 +56,7 @@ if (userConfig) {
 }
 
 export default nextConfig
+
+// Initialize OpenNext Cloudflare adapter for development
+import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare";
+initOpenNextCloudflareForDev();

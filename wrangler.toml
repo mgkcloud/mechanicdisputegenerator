@@ -3,14 +3,16 @@ main = "./.open-next/worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-# Assets configuration
-[site]
-bucket = "./.open-next/assets"
+# Assets configuration - correct format for static assets
+[assets]
+browser_TTL = 60
+serve_single_page_app = true
+directory = ".open-next/assets"
 
-# Configure routes for the Worker with custom domain
-routes = [
-  { pattern = "mechanicdispute.com.au", custom_domain = true }
-]
+# Configure custom domain
+[[routes]]
+pattern = "mechanicdispute.com.au"
+custom_domain = true
 
 # Configure environment variables
 [vars]

@@ -1,9 +1,7 @@
 import { redirect } from "next/navigation"
 import { retrieveCheckoutSession } from "@/lib/stripe-integration"
 
-/**
- * Page that handles the redirect from Stripe after successful payment
- */
+// Mark the page as dynamic since it uses searchParams
 export const dynamic = 'force-dynamic';
 
 export default async function PaymentSuccessPage({ searchParams }) {

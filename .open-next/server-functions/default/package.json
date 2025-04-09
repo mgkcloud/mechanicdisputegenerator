@@ -7,10 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "build:cf": "npx @opennextjs/cloudflare build",
-    "deploy:cf": "npm run build:cf && npx wrangler deploy",
-    "deploy": "npm run build:cf && npx wrangler deploy",
-    "deploy:custom-domain": "npx open-next build && npx wrangler deploy .open-next/server --name mechanicdispute-worker --custom-domain mechanicdispute.com.au"
+    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.1",
