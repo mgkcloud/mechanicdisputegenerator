@@ -1,0 +1,40 @@
+name = "mechanicdispute-worker"
+main = "./.open-next/worker.js"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# Assets configuration
+[site]
+bucket = "./.open-next/assets"
+
+# Configure routes for the Worker with custom domain
+routes = [
+  { pattern = "mechanicdispute.com.au", custom_domain = true }
+]
+
+# Configure environment variables
+[vars]
+BYPASS_PAYMENT = "false"
+
+# Configure R2 bucket binding
+[[r2_buckets]]
+binding = "DOCUMENTS_BUCKET"
+bucket_name = "mechanic-dispute-documents"
+preview_bucket_name = "mechanic-dispute-documents-dev"
+
+[[r2_buckets]]
+binding = "NEXT_INC_CACHE_R2_BUCKET"
+bucket_name = "mechanic-dispute-cache"
+preview_bucket_name = "mechanic-dispute-cache-dev"
+
+# Self-reference binding (required by OpenNext)
+[[services]]
+binding = "WORKER_SELF_REFERENCE"
+service = "mechanicdispute-worker"
+
+# Configure secrets (these will be set via the Cloudflare dashboard or wrangler CLI)
+# [secrets]
+# OPENAI_API_KEY
+# STRIPE_SECRET_KEY
+# STRIPE_PUBLISHABLE_KEY
+# STRIPE_WEBHOOK_SECRET 

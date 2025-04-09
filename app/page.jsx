@@ -683,6 +683,14 @@ export default function HomePage() {
           {renderCurrentStep()}
         </div>
       </div>
+
+      {/* Show testimonials and CTA only before the claim begins */}
+      {!claimStarted && (
+        <>
+          <Testimonials />
+          <CTASection startClaim={startClaim} />
+        </>
+      )}
     </main>
   )
 }

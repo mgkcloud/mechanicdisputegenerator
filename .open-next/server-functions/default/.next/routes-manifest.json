@@ -1,0 +1,125 @@
+{
+  "version": 3,
+  "pages404": true,
+  "caseSensitive": false,
+  "basePath": "",
+  "redirects": [
+    {
+      "source": "/:path+/",
+      "destination": "/:path+",
+      "internal": true,
+      "statusCode": 308,
+      "regex": "^(?:/((?:[^/]+?)(?:/(?:[^/]+?))*))/$"
+    }
+  ],
+  "headers": [],
+  "dynamicRoutes": [
+    {
+      "page": "/api/document/[filename]",
+      "regex": "^/api/document/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfilename": "nxtPfilename"
+      },
+      "namedRegex": "^/api/document/(?<nxtPfilename>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/documents/download/[filename]",
+      "regex": "^/api/documents/download/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfilename": "nxtPfilename"
+      },
+      "namedRegex": "^/api/documents/download/(?<nxtPfilename>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/documents/[fileName]",
+      "regex": "^/api/documents/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfileName": "nxtPfileName"
+      },
+      "namedRegex": "^/api/documents/(?<nxtPfileName>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/api/get-photo/[caseId]/[photoId]",
+      "regex": "^/api/get\\-photo/([^/]+?)/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPcaseId": "nxtPcaseId",
+        "nxtPphotoId": "nxtPphotoId"
+      },
+      "namedRegex": "^/api/get\\-photo/(?<nxtPcaseId>[^/]+?)/(?<nxtPphotoId>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/documents/download/[filename]",
+      "regex": "^/documents/download/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfilename": "nxtPfilename"
+      },
+      "namedRegex": "^/documents/download/(?<nxtPfilename>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/documents/view/[filename]",
+      "regex": "^/documents/view/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfilename": "nxtPfilename"
+      },
+      "namedRegex": "^/documents/view/(?<nxtPfilename>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/thank-you/[filename]",
+      "regex": "^/thank\\-you/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPfilename": "nxtPfilename"
+      },
+      "namedRegex": "^/thank\\-you/(?<nxtPfilename>[^/]+?)(?:/)?$"
+    }
+  ],
+  "staticRoutes": [
+    {
+      "page": "/",
+      "regex": "^/(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/(?:/)?$"
+    },
+    {
+      "page": "/_not-found",
+      "regex": "^/_not\\-found(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/payment-cancelled",
+      "regex": "^/payment\\-cancelled(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-cancelled(?:/)?$"
+    },
+    {
+      "page": "/payment-success",
+      "regex": "^/payment\\-success(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/payment\\-success(?:/)?$"
+    },
+    {
+      "page": "/pricing",
+      "regex": "^/pricing(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/pricing(?:/)?$"
+    }
+  ],
+  "dataRoutes": [],
+  "rsc": {
+    "header": "RSC",
+    "varyHeader": "RSC, Next-Router-State-Tree, Next-Router-Prefetch, Next-Router-Segment-Prefetch",
+    "prefetchHeader": "Next-Router-Prefetch",
+    "didPostponeHeader": "x-nextjs-postponed",
+    "contentTypeHeader": "text/x-component",
+    "suffix": ".rsc",
+    "prefetchSuffix": ".prefetch.rsc",
+    "prefetchSegmentHeader": "Next-Router-Segment-Prefetch",
+    "prefetchSegmentSuffix": ".segment.rsc",
+    "prefetchSegmentDirSuffix": ".segments"
+  },
+  "rewriteHeaders": {
+    "pathHeader": "x-nextjs-rewritten-path",
+    "queryHeader": "x-nextjs-rewritten-query"
+  },
+  "rewrites": []
+}

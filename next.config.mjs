@@ -21,6 +21,13 @@ const nextConfig = {
   },
   images: {
     unoptimized: true,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'service.firecrawl.dev',
+        pathname: '/storage/v1/object/public/media/**',
+      },
+    ],
   },
   experimental: {
     webpackBuildWorker: true,

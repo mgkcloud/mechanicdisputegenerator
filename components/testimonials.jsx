@@ -1,4 +1,5 @@
 import { Star } from "lucide-react"
+import Image from "next/image"
 
 /**
  * Testimonials section component
@@ -27,7 +28,14 @@ export default function Testimonials() {
               repairs. The document was professional and clearly outlined my rights."
             </p>
             <div className="flex items-center">
-              <div className="h-10 w-10 rounded-full bg-primary/20"></div>
+              <div className="h-10 w-10 overflow-hidden rounded-full relative">
+                <Image 
+                  src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-20806a1a-adff-48bf-8a59-37897a071aee.png" 
+                  alt="Sarah T." 
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="ml-3">
                 <p className="font-medium text-gray-900">Sarah T.</p>
                 <p className="text-xs text-muted-foreground">Sydney, NSW</p>
@@ -47,7 +55,14 @@ export default function Testimonials() {
               create a professional document that got results fast."
             </p>
             <div className="flex items-center">
-              <div className="h-10 w-10 rounded-full bg-primary/20"></div>
+              <div className="h-10 w-10 overflow-hidden rounded-full relative">
+                <Image 
+                  src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-fb527744-40da-481b-b92a-353b2675e9cb.png" 
+                  alt="Michael R." 
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="ml-3">
                 <p className="font-medium text-gray-900">Michael R.</p>
                 <p className="text-xs text-muted-foreground">Melbourne, VIC</p>
@@ -67,7 +82,14 @@ export default function Testimonials() {
               professionally drafted letter, they quickly changed their tune."
             </p>
             <div className="flex items-center">
-              <div className="h-10 w-10 rounded-full bg-primary/20"></div>
+              <div className="h-10 w-10 overflow-hidden rounded-full relative">
+                <Image 
+                  src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-8691a9e1-3484-4f50-a97f-737fd0acbcb8.png" 
+                  alt="James L." 
+                  fill
+                  className="object-cover"
+                />
+              </div>
               <div className="ml-3">
                 <p className="font-medium text-gray-900">James L.</p>
                 <p className="text-xs text-muted-foreground">Brisbane, QLD</p>

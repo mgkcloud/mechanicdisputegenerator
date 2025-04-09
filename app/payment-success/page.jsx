@@ -1,19 +1,17 @@
-"use server"
-
 import { redirect } from "next/navigation"
 import { retrieveCheckoutSession } from "@/lib/stripe-integration"
 
 /**
  * Page that handles the redirect from Stripe after successful payment
- * @param {Object} context - Page context
- * @param {Promise<{session_id?: string}>} context.searchParams - URL search parameters
  */
+export const dynamic = 'force-dynamic';
+
 export default async function PaymentSuccessPage({ searchParams }) {
   let redirectTarget = "/payment-cancelled"; // Default redirect
 
   try {
-    // Await searchParams to access its properties
-    const { session_id: sessionId } = await searchParams
+    // Access searchParams directly
+    const sessionId = searchParams.session_id
 
     if (!sessionId) {
       throw new Error("Missing Stripe session ID")
@@ -42,11 +40,6 @@ export default async function PaymentSuccessPage({ searchParams }) {
     // redirectTarget remains "/payment-cancelled" on any error during validation
   }
 
-  // Perform the redirect *after* the try...catch block
-  // This allows NEXT_REDIRECT to propagate correctly without being caught above.
+  // Perform the redirect
   redirect(redirectTarget)
-
-  // Note: Execution stops here due to redirect, so nothing below this line runs.
-  // Returning null or a fallback component isn't strictly necessary but can be good practice.
-  // return null;
 }
