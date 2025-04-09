@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
+import ClearStorageListener from "@/components/form/clear-storage-listener"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="light">
+          <ClearStorageListener />
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />

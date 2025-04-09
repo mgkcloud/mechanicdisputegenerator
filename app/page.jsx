@@ -21,6 +21,15 @@ import { validateForm, validateUploads, formatFileSize, formatCurrency } from "@
 import { uploadFileToR2 } from "@/lib/file-utils"
 import { generateDocument, createCheckoutSession, processPayment, checkPaymentStatus } from "@/lib/payment-utils"
 
+// Local storage keys
+const STORAGE_KEYS = {
+  FORM_DATA: "mechanic_dispute_form_data",
+  UPLOADED_FILES: "mechanic_dispute_uploaded_files",
+  CURRENT_STEP: "mechanic_dispute_current_step",
+  CLAIM_STARTED: "mechanic_dispute_claim_started",
+  DOCUMENT_DATA: "mechanic_dispute_document_data"
+}
+
 export default function HomePage() {
   const [currentStep, setCurrentStep] = useState(1)
   const [claimStarted, setClaimStarted] = useState(false)
@@ -44,6 +53,93 @@ export default function HomePage() {
       setStripePromise(window.Stripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY))
     }
   }, [])
+
+  // Load persisted form data from localStorage on initial render
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        // Load form data
+        const savedFormData = localStorage.getItem(STORAGE_KEYS.FORM_DATA)
+        if (savedFormData) {
+          setFormData(JSON.parse(savedFormData))
+        }
+        
+        // Load uploaded files
+        const savedUploadedFiles = localStorage.getItem(STORAGE_KEYS.UPLOADED_FILES)
+        if (savedUploadedFiles) {
+          setUploadedFiles(JSON.parse(savedUploadedFiles))
+        }
+        
+        // Load document data
+        const savedDocumentData = localStorage.getItem(STORAGE_KEYS.DOCUMENT_DATA)
+        if (savedDocumentData) {
+          setDocumentData(JSON.parse(savedDocumentData))
+        }
+        
+        // Load current step
+        const savedCurrentStep = localStorage.getItem(STORAGE_KEYS.CURRENT_STEP)
+        if (savedCurrentStep) {
+          setCurrentStep(parseInt(savedCurrentStep, 10))
+        }
+        
+        // Load claim started
+        const savedClaimStarted = localStorage.getItem(STORAGE_KEYS.CLAIM_STARTED)
+        if (savedClaimStarted) {
+          setClaimStarted(JSON.parse(savedClaimStarted))
+        }
+      } catch (error) {
+        console.error("Error loading saved form data:", error)
+        // If there's an error, clear localStorage to prevent future issues
+        clearPersistedData()
+      }
+    }
+  }, [])
+
+  // Save form data to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined" && Object.keys(formData).length > 0) {
+      localStorage.setItem(STORAGE_KEYS.FORM_DATA, JSON.stringify(formData))
+    }
+  }, [formData])
+
+  // Save uploaded files to localStorage whenever they change
+  useEffect(() => {
+    if (typeof window !== "undefined" && uploadedFiles.length > 0) {
+      localStorage.setItem(STORAGE_KEYS.UPLOADED_FILES, JSON.stringify(uploadedFiles))
+    }
+  }, [uploadedFiles])
+
+  // Save document data to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined" && documentData) {
+      localStorage.setItem(STORAGE_KEYS.DOCUMENT_DATA, JSON.stringify(documentData))
+    }
+  }, [documentData])
+
+  // Save current step to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEYS.CURRENT_STEP, currentStep.toString())
+    }
+  }, [currentStep])
+
+  // Save claim started to localStorage whenever it changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem(STORAGE_KEYS.CLAIM_STARTED, JSON.stringify(claimStarted))
+    }
+  }, [claimStarted])
+
+  // Clear all persisted data
+  const clearPersistedData = () => {
+    if (typeof window !== "undefined") {
+      localStorage.removeItem(STORAGE_KEYS.FORM_DATA)
+      localStorage.removeItem(STORAGE_KEYS.UPLOADED_FILES)
+      localStorage.removeItem(STORAGE_KEYS.CURRENT_STEP)
+      localStorage.removeItem(STORAGE_KEYS.CLAIM_STARTED)
+      localStorage.removeItem(STORAGE_KEYS.DOCUMENT_DATA)
+    }
+  }
 
   // Define steps for clarity
   const steps = [
@@ -209,19 +305,37 @@ export default function HomePage() {
       }
     } else if (currentStep === 4) {
       // Process payment before proceeding to download
-      setIsProcessingPayment(true)
       try {
+        console.log("Payment step handleNext called, clientSecret:", clientSecret ? "exists" : "missing")
+        
+        // Ensure we have a valid client secret before redirecting to Stripe
+        if (!clientSecret) {
+          console.log("No client secret found, regenerating checkout session...")
+          // No client secret available, regenerate checkout session
+          const success = await regenerateCheckoutSession()
+          if (!success) {
+            throw new Error("Failed to prepare payment. Please try again.")
+          }
+          console.log("Regenerated client secret:", clientSecret ? "exists" : "still missing")
+        }
+        
+        console.log("Proceeding with payment using clientSecret:", clientSecret)
         const paymentResult = await processPayment(documentData, stripePromise, clientSecret)
         shouldProceed = paymentResult
 
         if (paymentResult) {
           setPaymentSuccess(true)
+          
+          // Clear persisted data on successful payment
+          clearPersistedData()
+          
           toast({
             title: "Payment successful",
             description: "Your payment has been processed successfully",
           })
         }
       } catch (error) {
+        console.error("Payment process error:", error)
         toast({
           title: "Payment failed",
           description: error.message || "There was a problem processing your payment. Please try again.",
@@ -270,11 +384,92 @@ export default function HomePage() {
     }
   }
 
+  // Add a function to regenerate checkout session
+  const regenerateCheckoutSession = async () => {
+    console.log("Starting checkout session regeneration...")
+    setIsProcessingPayment(true)
+    
+    try {
+      // Check if document data is missing and form data + uploaded files are available
+      if (!documentData && Object.keys(formData).length > 0 && uploadedFiles.length > 0) {
+        console.log("Document data missing, regenerating document first...")
+        try {
+          // Generate the document data first
+          const docData = await generateDocument(formData, uploadedFiles)
+          setDocumentData(docData)
+          
+          console.log("Document regeneration successful:", docData)
+          
+          // Create a new checkout session with the regenerated document data
+          console.log("Creating checkout session with regenerated document data...")
+          const checkoutData = await createCheckoutSession(docData, formData)
+          
+          if (!checkoutData || !checkoutData.id) {
+            throw new Error("Invalid checkout session response from server")
+          }
+          
+          console.log("Successfully obtained new checkout session ID:", checkoutData.id)
+          setClientSecret(checkoutData.id)
+          setIsProcessingPayment(false)
+          return true
+        } catch (docError) {
+          console.error("Error regenerating document:", docError)
+          toast({
+            title: "Error preparing document",
+            description: "There was a problem regenerating your document. Please go back to the review step and try again.",
+            variant: "destructive",
+          })
+          setIsProcessingPayment(false)
+          return false
+        }
+      }
+      
+      // If we reach here and still don't have document data, show an error
+      if (!documentData) {
+        console.error("Cannot regenerate checkout session: No document data available")
+        toast({
+          title: "Error preparing payment",
+          description: "Unable to prepare payment. Please generate your document first.",
+          variant: "destructive",
+        })
+        setIsProcessingPayment(false)
+        return false
+      }
+      
+      // Create a new checkout session
+      console.log("Calling createCheckoutSession API...")
+      const checkoutData = await createCheckoutSession(documentData, formData)
+      
+      if (!checkoutData || !checkoutData.id) {
+        throw new Error("Invalid checkout session response from server")
+      }
+      
+      console.log("Successfully obtained new checkout session ID:", checkoutData.id)
+      setClientSecret(checkoutData.id)
+      setIsProcessingPayment(false)
+      return true
+    } catch (error) {
+      console.error("Error regenerating checkout session:", error)
+      toast({
+        title: "Error preparing payment",
+        description: "There was a problem preparing the payment. Please try again.",
+        variant: "destructive",
+      })
+      setIsProcessingPayment(false)
+      return false
+    }
+  }
+
   // Simplified handler to jump to a specific step (e.g., for the stepper itself)
   const goToStep = (stepId) => {
     if (stepId <= currentStep) {
       setCurrentStep(stepId)
       window.scrollTo(0, 0)
+      
+      // If going back to the payment step, regenerate checkout session
+      if (stepId === 4) {
+        regenerateCheckoutSession()
+      }
     }
   }
 
@@ -303,6 +498,9 @@ export default function HomePage() {
     setPaymentSuccess(false)
     setClientSecret("")
     window.scrollTo(0, 0)
+    
+    // Clear persisted data
+    clearPersistedData()
 
     toast({
       title: "Form reset",
@@ -310,6 +508,26 @@ export default function HomePage() {
     })
   }
 
+  // Check for payment_cancelled parameter on component mount
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search)
+    const paymentCancelled = urlParams.get("payment_cancelled")
+
+    if (paymentCancelled === "true" && documentData) {
+      // If payment was cancelled and we have document data,
+      // set the current step to review (step 3)
+      setCurrentStep(3)
+      
+      // Clean up the URL
+      window.history.replaceState({}, document.title, window.location.pathname)
+      
+      toast({
+        title: "Payment cancelled",
+        description: "You can try again or make changes to your document",
+      })
+    }
+  }, [documentData])
+  
   // Check for payment success on component mount (for redirect from Stripe)
   useEffect(() => {
     const checkPaymentFromUrl = async () => {
@@ -322,6 +540,9 @@ export default function HomePage() {
         if (isPaid) {
           setPaymentSuccess(true)
           setCurrentStep(5) // Move to download step
+          
+          // Clear persisted data on successful payment
+          clearPersistedData()
 
           toast({
             title: "Payment successful",
@@ -336,6 +557,25 @@ export default function HomePage() {
 
     checkPaymentFromUrl()
   }, [])
+  
+  // Regenerate checkout session when entering the payment step
+  useEffect(() => {
+    // Always regenerate the checkout session when at the payment step
+    if (currentStep === 4) {
+      console.log("On payment step, checking requirements...", {
+        hasDocumentData: !!documentData,
+        hasFormData: Object.keys(formData).length > 0,
+        hasUploadedFiles: uploadedFiles.length > 0
+      })
+      
+      // Add a small delay to ensure all states are settled
+      const timer = setTimeout(() => {
+        regenerateCheckoutSession()
+      }, 300)
+      
+      return () => clearTimeout(timer)
+    }
+  }, [currentStep])
 
   return (
     <>

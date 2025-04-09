@@ -1,14 +1,20 @@
+"use server"
+
 import { redirect } from "next/navigation"
 import { retrieveCheckoutSession } from "@/lib/stripe-integration"
 
 /**
  * Page that handles the redirect from Stripe after successful payment
- * @param {Object} searchParams - URL search parameters including session_id
+ * @param {Object} context - Page context
+ * @param {Promise<{session_id?: string}>} context.searchParams - URL search parameters
  */
 export default async function PaymentSuccessPage({ searchParams }) {
-  const sessionId = searchParams.session_id
+  let redirectTarget = "/payment-cancelled"; // Default redirect
 
   try {
+    // Await searchParams to access its properties
+    const { session_id: sessionId } = await searchParams
+
     if (!sessionId) {
       throw new Error("Missing Stripe session ID")
     }
@@ -24,32 +30,23 @@ export default async function PaymentSuccessPage({ searchParams }) {
         throw new Error("Filename missing from Stripe session metadata")
       }
 
-      // Redirect to the thank-you page
-      redirect(`/thank-you/${filename}`)
+      // Set the target for successful redirect
+      redirectTarget = `/api/payment-finalize?filename=${encodeURIComponent(filename)}`
     } else {
       // Payment not successful or session invalid
       console.warn("Payment not successful or session invalid:", sessionId, session?.payment_status)
-      redirect("/payment-cancelled")
+      // redirectTarget remains "/payment-cancelled"
     }
   } catch (error) {
-    console.error("Error handling payment success:", error)
-
-    // Show a simple loading message before redirecting
-    // In a production app, you would handle this more gracefully
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-[#E8EAEC]">
-        <div className="card p-8 text-center max-w-md">
-          <h1 className="text-2xl font-bold mb-4">Processing Payment</h1>
-          <p className="mb-6">Please wait while we verify your payment...</p>
-          <div className="spinner mx-auto"></div>
-          <p className="mt-4 text-gray-500">You will be redirected automatically.</p>
-
-          <div className="mt-6 p-4 bg-[#f1f5f9] rounded-lg text-sm text-gray-500">
-            <p>If you're not redirected within 10 seconds, please contact support with this session ID:</p>
-            <p className="font-mono mt-2">{sessionId || "No session ID provided"}</p>
-          </div>
-        </div>
-      </div>
-    )
+    console.error("Error handling payment success during validation:", error)
+    // redirectTarget remains "/payment-cancelled" on any error during validation
   }
+
+  // Perform the redirect *after* the try...catch block
+  // This allows NEXT_REDIRECT to propagate correctly without being caught above.
+  redirect(redirectTarget)
+
+  // Note: Execution stops here due to redirect, so nothing below this line runs.
+  // Returning null or a fallback component isn't strictly necessary but can be good practice.
+  // return null;
 }

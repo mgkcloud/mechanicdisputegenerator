@@ -1,4 +1,5 @@
 import Link from "next/link"
+import BackButton from "@/components/form/back-button"
 
 export const metadata = {
   title: "Payment Cancelled | Australian Mechanic Dispute Resolution",
@@ -8,7 +9,7 @@ export const metadata = {
 /**
  * Page shown when payment is cancelled
  */
-export default function PaymentCancelledPage() {
+export default async function PaymentCancelledPage() {
   return (
     <>
       <header className="bg-[#0D2750] text-white py-10 px-4 text-center shadow-lg">
@@ -31,9 +32,9 @@ export default function PaymentCancelledPage() {
           </p>
 
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link href="/" className="btn">
+            <BackButton className="btn">
               Return to Form
-            </Link>
+            </BackButton>
             <Link href="mailto:support@australianmechanicdispute.com" className="btn-secondary">
               Contact Support
             </Link>

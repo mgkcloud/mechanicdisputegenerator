@@ -21,11 +21,13 @@ const bucketName = process.env.S3_BUCKET_NAME || "mechanic-dispute-documents"
 /**
  * API route to retrieve a photo
  * @param {Request} request - The incoming request
- * @param {Object} params - Route params including caseId and photoId
+ * @param {Object} context - Route context
+ * @param {Promise<{caseId: string, photoId: string}>} context.params - The params from the URL
  */
 export async function GET(request, { params }) {
   try {
-    const { caseId, photoId } = params
+    // Await params to access its properties
+    const { caseId, photoId } = await params
 
     if (!caseId || !photoId) {
       return NextResponse.json(
