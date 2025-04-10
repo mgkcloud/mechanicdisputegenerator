@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST='{"lib/document-generator-au.js -> ./australian-templates":{"id":7024,"files":["static/chunks/24.164f31130e1d40d4.js"]}}';

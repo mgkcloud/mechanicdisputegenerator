@@ -209,9 +209,12 @@ export async function POST(request) {
   try {
     // Get environment variables from Cloudflare or process.env
     let env = {};
+    let R2_BUCKET = null;
+    
     try {
       const context = await getCloudflareContext({ async: true });
       env = context.env || {};
+      R2_BUCKET = env.DOCUMENTS_BUCKET;
       console.log("Available environment variables:", Object.keys(env).filter(k => !k.includes('KEY')));
     } catch (error) {
       console.warn("Not running in Cloudflare Workers context, using process.env");
@@ -247,40 +250,43 @@ export async function POST(request) {
 
     console.log(`Generating presigned URL for: ${objectKey} (${actualContentType})`);
     
-    // Check for R2 bucket binding
-    const bucketBinding = env.DOCUMENTS_BUCKET;
     let presignedUrl = null;
     let method = null;
     
-    if (bucketBinding && typeof bucketBinding.createPresignedUrl === 'function') {
+    // Check if we have an R2 bucket binding and log its capabilities
+    if (R2_BUCKET) {
+      console.log(`R2 bucket found, methods: ${Object.keys(R2_BUCKET).join(', ')}`);
+      console.log(`R2 bucket type: ${typeof R2_BUCKET}`);
+      
       try {
-        console.log("Using R2 bucket binding directly");
-        // Use the native R2 bucket binding method
-        presignedUrl = await generateDirectR2PresignedUrl(bucketBinding, objectKey, actualContentType);
-        method = "R2_DIRECT";
+        // Try to use put method directly since createPresignedUrl might not be available
+        console.log("Using direct upload to R2 bucket via dev-uploads API endpoint");
+        
+        // Use our dev-uploads endpoint as a proxy to R2
+        const host = request.headers.get('host') || 'localhost:8788';
+        const protocol = host.includes('localhost') ? 'http' : 'https';
+        presignedUrl = `${protocol}://${host}/api/dev-uploads/${objectKey}`;
+        method = "R2_DEV_PROXY";
       } catch (error) {
-        console.error("Error using R2 bucket binding:", error);
-        // Continue to fallback
+        console.error("Error setting up R2 upload:", error);
+        // Continue to fallback options
       }
     }
     
-    // Fallback to HTTP upload URL if R2 binding isn't available
+    // Fallback to HTTP upload URL if R2 direct method isn't available
     if (!presignedUrl && env.S3_ENDPOINT && env.S3_BUCKET_NAME) {
       try {
-        console.log("Using S3/R2 endpoint via HTTP");
+        console.log("Using S3/R2 endpoint via direct HTTP");
         
-        // Just create a direct URL - this works for public buckets or development
+        // Direct URL to bucket - this is just for development
+        // In production you would properly sign this URL
         const endpoint = env.S3_ENDPOINT.replace(/\/$/, '');
         const bucket = env.S3_BUCKET_NAME;
         
-        // Generate a token for development/testing purposes
-        // In production, this should be a properly signed URL
-        const token = Date.now().toString();
-        
-        presignedUrl = `${endpoint}/${bucket}/${objectKey}?token=${token}`;
+        presignedUrl = `${endpoint}/${bucket}/${objectKey}`;
         method = "HTTP_DIRECT";
         
-        console.log(`Generated HTTP upload URL: ${presignedUrl}`);
+        console.log(`Generated direct bucket URL: ${presignedUrl}`);
       } catch (error) {
         console.error("Error generating HTTP upload URL:", error);
       }
@@ -289,7 +295,9 @@ export async function POST(request) {
     // Final fallback for development
     if (!presignedUrl) {
       console.log("Using local development URL");
-      presignedUrl = `/api/dev-uploads/${objectKey}?dummy=1`;
+      const host = request.headers.get('host') || 'localhost:8788';
+      const protocol = host.includes('localhost') ? 'http' : 'https';
+      presignedUrl = `${protocol}://${host}/api/dev-uploads/${objectKey}`;
       method = "DEV_MODE";
     }
     
