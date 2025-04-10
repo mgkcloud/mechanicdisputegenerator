@@ -1,5 +1,5 @@
 name = "mechanicdispute-worker"
-main = "./.open-next/worker.js"
+main = ".open-next/worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
@@ -17,6 +17,7 @@ custom_domain = true
 # Configure environment variables
 [vars]
 BYPASS_PAYMENT = "false"
+
 
 # Configure R2 bucket binding
 [[r2_buckets]]

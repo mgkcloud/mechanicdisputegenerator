@@ -8,8 +8,9 @@ export default async function PaymentSuccessPage({ searchParams }) {
   let redirectTarget = "/payment-cancelled"; // Default redirect
 
   try {
-    // Access searchParams directly
-    const sessionId = searchParams.session_id
+    // Await searchParams before accessing properties
+    const awaitedSearchParams = await searchParams;
+    const sessionId = awaitedSearchParams.session_id
 
     if (!sessionId) {
       throw new Error("Missing Stripe session ID")

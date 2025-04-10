@@ -1,3 +1,5 @@
+import webpack from 'webpack';
+
 let userConfig = undefined
 try {
   // try to import ESM first
@@ -34,6 +36,26 @@ const nextConfig = {
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
   },
+  serverExternalPackages: ['@aws-sdk'],
+  
+  // Add Webpack config to define __name globally
+  webpack: (config, { isServer }) => {
+    // Define __name polyfill globally for both server and client builds
+    config.plugins.push(
+      new webpack.DefinePlugin({
+        '__name': JSON.stringify(function(target, value) {
+          if (typeof Object.defineProperty === 'function') {
+            Object.defineProperty(target, 'name', { value: value, configurable: true });
+          }
+          return target;
+        }.toString())
+      })
+    );
+    return config;
+  },
+  
+  // Remove custom headers block for simplification
+  // async headers() { ... }
 }
 
 if (userConfig) {

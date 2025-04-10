@@ -7,6 +7,8 @@ import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/header"
 import Footer from "@/components/footer"
 import ClearStorageListener from "@/components/form/clear-storage-listener"
+// Import polyfill for __name
+import "./index.js"
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 

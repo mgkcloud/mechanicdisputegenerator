@@ -2,7 +2,6 @@
   "version": 1,
   "config": {
     "env": {},
-    "webpack": null,
     "eslint": {
       "ignoreDuringBuilds": true
     },
@@ -287,7 +286,10 @@
     },
     "htmlLimitedBots": "Mediapartners-Google|Slurp|DuckDuckBot|baiduspider|yandex|sogou|bitlybot|tumblr|vkShare|quora link preview|redditbot|ia_archiver|Bingbot|BingPreview|applebot|facebookexternalhit|facebookcatalog|Twitterbot|LinkedInBot|Slackbot|Discordbot|WhatsApp|SkypeUriPreview",
     "bundlePagesRouterDependencies": false,
-    "configFileName": "next.config.mjs"
+    "configFileName": "next.config.mjs",
+    "serverExternalPackages": [
+      "@aws-sdk"
+    ]
   },
   "appDir": "/Users/wlvar/Downloads/mechanicdisputecfworker (2)",
   "relativeAppDir": "",

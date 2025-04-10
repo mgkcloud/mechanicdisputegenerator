@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "generatedAt": "2025-04-10T04:20:52.631Z",
+    "tasksAnalyzed": 10,
+    "thresholdScore": 5,
+    "projectName": "Your Project Name",
+    "usedResearch": true
+  },
+  "complexityAnalysis": [
+    {
+      "taskId": 1,
+      "taskTitle": "Refactor File Upload to Use R2 Presigned URLs (Backend)",
+      "complexityScore": 7,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Break down the backend refactoring task into subtasks, such as implementing presigned URL generation, verifying R2 permissions, testing URL validity, and error handling.",
+      "reasoning": "The task involves integration with Cloudflare R2's presigned URL functionality, requiring familiarity with R2 APIs and robust error handling. Moderate complexity arises from ensuring security and compatibility."
+    },
+    {
+      "taskId": 2,
+      "taskTitle": "Refactor File Upload to Use R2 Presigned URLs (Frontend)",
+      "complexityScore": 6,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Detail subtasks for updating the frontend logic, such as modifying the file upload function, ensuring proper header configuration, and testing the new upload flow.",
+      "reasoning": "This task is moderately complex as it focuses on updating a single function to align with backend changes, requiring attention to detail and testing for seamless integration."
+    },
+    {
+      "taskId": 3,
+      "taskTitle": "Remove Obsolete Direct Upload Proxy API",
+      "complexityScore": 3,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "List subtasks for safely removing the deprecated API, including code deletion, dependency checks, and testing to confirm no references remain.",
+      "reasoning": "This is a straightforward task, primarily involving code cleanup and verification to ensure no lingering dependencies."
+    },
+    {
+      "taskId": 4,
+      "taskTitle": "Implement Stripe Webhook Fulfillment Logic",
+      "complexityScore": 8,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the webhook logic implementation into subtasks, including event data retrieval, state updates, access grant logic, idempotency handling, and error management.",
+      "reasoning": "The task is complex due to the need for secure handling of financial transactions, database updates, and robust idempotency checks to avoid duplicate processing."
+    },
+    {
+      "taskId": 5,
+      "taskTitle": "Validate/Implement LLM Interaction Logic",
+      "complexityScore": 7,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Divide the validation task into subtasks, such as reviewing the LLM API integration, securing environment variables, improving prompt handling, and implementing error recovery mechanisms.",
+      "reasoning": "The task involves reviewing and refining interactions with an external LLM API, which requires careful validation of API usage and secure handling of sensitive data."
+    },
+    {
+      "taskId": 6,
+      "taskTitle": "Verify/Implement PDF Generation",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Provide subtasks for verifying the need for PDF generation, configuring a suitable library, and testing output quality for both HTML and PDF formats.",
+      "reasoning": "This task is relatively simple but requires investigation into existing functionality and integrating or modifying libraries for PDF generation."
+    },
+    {
+      "taskId": 7,
+      "taskTitle": "Populate Static Page Content",
+      "complexityScore": 3,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "List subtasks for content population, such as gathering legal text, editing static page components, and verifying formatting.",
+      "reasoning": "The task is straightforward, involving basic content updates without significant logic or functional changes."
+    },
+    {
+      "taskId": 8,
+      "taskTitle": "Implement Basic Logging and Monitoring",
+      "complexityScore": 5,
+      "recommendedSubtasks": 3,
+      "expansionPrompt": "Identify subtasks for logging setup, such as adding detailed error logs, integrating a monitoring service, and testing log outputs for key API endpoints.",
+      "reasoning": "This task involves moderate complexity, as it requires integration with logging and monitoring tools and ensuring adequate coverage of critical points."
+    },
+    {
+      "taskId": 9,
+      "taskTitle": "Perform Security Review and Hardening",
+      "complexityScore": 8,
+      "recommendedSubtasks": 4,
+      "expansionPrompt": "Define subtasks for a comprehensive security review, covering input validation, rate limiting, secret handling, and permission audits.",
+      "reasoning": "The task is complex due to the need for thorough analysis and implementation of security measures across multiple system components."
+    },
+    {
+      "taskId": 10,
+      "taskTitle": "Add Basic Unit/Integration Tests",
+      "complexityScore": 7,
+      "recommendedSubtasks": 5,
+      "expansionPrompt": "Break down the testing task into subtasks, such as identifying critical functions, writing unit tests, creating integration tests for APIs, and setting up CI/CD integration for test automation.",
+      "reasoning": "The task is moderately complex, requiring test creation for various functions and endpoints, which involves setting up robust coverage and automation."
+    }
+  ]
+}
