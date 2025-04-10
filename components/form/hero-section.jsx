@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button"
 import { ArrowRight, CheckCircle, Shield, Star } from "lucide-react"
+import Link from 'next/link'
 
 /**
  * Hero section component that adapts based on claim status
@@ -42,9 +43,11 @@ export default function HeroSection({ claimStarted, startClaim, handleStartOver,
                   Start Your Claim Now
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline" href="/how-it-works">
-                  Learn How It Works
-                </Button>
+                <Link href="/how-it-works">
+                  <Button size="lg" variant="outline">
+                    Learn How It Works
+                  </Button>
+                </Link>
               </div>
 
               {/* Trust indicators */}
