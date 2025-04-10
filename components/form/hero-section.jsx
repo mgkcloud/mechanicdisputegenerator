@@ -42,7 +42,7 @@ export default function HeroSection({ claimStarted, startClaim, handleStartOver,
                   Start Your Claim Now
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
-                <Button size="lg" variant="outline">
+                <Button size="lg" variant="outline" href="/how-it-works">
                   Learn How It Works
                 </Button>
               </div>

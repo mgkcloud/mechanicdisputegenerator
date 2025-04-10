@@ -31,13 +31,13 @@ export default function Testimonials() {
               <div className="h-10 w-10 overflow-hidden rounded-full relative">
                 <Image 
                   src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-20806a1a-adff-48bf-8a59-37897a071aee.png" 
-                  alt="Sarah T." 
+                  alt="Matt T." 
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="ml-3">
-                <p className="font-medium text-gray-900">Sarah T.</p>
+                <p className="font-medium text-gray-900">Matt T.</p>
                 <p className="text-xs text-muted-foreground">Sydney, NSW</p>
               </div>
             </div>
@@ -58,13 +58,13 @@ export default function Testimonials() {
               <div className="h-10 w-10 overflow-hidden rounded-full relative">
                 <Image 
                   src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-fb527744-40da-481b-b92a-353b2675e9cb.png" 
-                  alt="Michael R." 
+                  alt="Mia R." 
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="ml-3">
-                <p className="font-medium text-gray-900">Michael R.</p>
+                <p className="font-medium text-gray-900">Mia R.</p>
                 <p className="text-xs text-muted-foreground">Melbourne, VIC</p>
               </div>
             </div>
@@ -85,13 +85,13 @@ export default function Testimonials() {
               <div className="h-10 w-10 overflow-hidden rounded-full relative">
                 <Image 
                   src="https://service.firecrawl.dev/storage/v1/object/public/media/screenshot-8691a9e1-3484-4f50-a97f-737fd0acbcb8.png" 
-                  alt="James L." 
+                  alt="Helen L." 
                   fill
                   className="object-cover"
                 />
               </div>
               <div className="ml-3">
-                <p className="font-medium text-gray-900">James L.</p>
+                <p className="font-medium text-gray-900">Helen L.</p>
                 <p className="text-xs text-muted-foreground">Brisbane, QLD</p>
               </div>
             </div>

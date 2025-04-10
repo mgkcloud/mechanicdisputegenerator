@@ -205,6 +205,20 @@ function generateCustomSignedUrl(options) {
   return `${protocol}://${host}${request.path}?${queryString}`;
 }
 
+/**
+ * Get the base URL for the current request
+ */
+function getBaseUrl(request) {
+  // Extract host from request headers
+  const host = request.headers.get('host') || 'localhost:8787';
+  
+  // Determine protocol (use https except for localhost)
+  const protocol = host.includes('localhost') ? 'http' : 'https';
+  
+  // Return the base URL
+  return `${protocol}://${host}`;
+}
+
 export async function POST(request) {
   try {
     // Get environment variables from Cloudflare or process.env
@@ -250,6 +264,10 @@ export async function POST(request) {
 
     console.log(`Generating presigned URL for: ${objectKey} (${actualContentType})`);
     
+    // Get the base URL for the current environment
+    const baseUrl = getBaseUrl(request);
+    console.log(`Using base URL: ${baseUrl} for uploads`);
+    
     let presignedUrl = null;
     let method = null;
     
@@ -258,46 +276,62 @@ export async function POST(request) {
       console.log(`R2 bucket found, methods: ${Object.keys(R2_BUCKET).join(', ')}`);
       console.log(`R2 bucket type: ${typeof R2_BUCKET}`);
       
-      try {
-        // Try to use put method directly since createPresignedUrl might not be available
-        console.log("Using direct upload to R2 bucket via dev-uploads API endpoint");
-        
-        // Use our dev-uploads endpoint as a proxy to R2
-        const host = request.headers.get('host') || 'localhost:8788';
-        const protocol = host.includes('localhost') ? 'http' : 'https';
-        presignedUrl = `${protocol}://${host}/api/dev-uploads/${objectKey}`;
+      // Try to use R2's native createPresignedUrl if available
+      if (typeof R2_BUCKET.createPresignedUrl === 'function') {
+        try {
+          console.log("Using R2 bucket's native createPresignedUrl method");
+          presignedUrl = await R2_BUCKET.createPresignedUrl(objectKey, {
+            method: 'PUT',
+            expirationTtl: 3600,
+            headers: {
+              'Content-Type': actualContentType,
+              'Cache-Control': 'public, max-age=31536000'
+            }
+          });
+          method = "R2_NATIVE";
+          console.log(`Generated native R2 presigned URL: ${presignedUrl}`);
+        } catch (error) {
+          console.error("Error using R2 native presigned URL:", error);
+          // Continue to fallback
+        }
+      }
+      
+      // If native method failed or isn't available, use our dev-uploads endpoint
+      if (!presignedUrl) {
+        console.log("Using dev-uploads endpoint as R2 proxy");
+        presignedUrl = `${baseUrl}/api/dev-uploads/${objectKey}`;
         method = "R2_DEV_PROXY";
-      } catch (error) {
-        console.error("Error setting up R2 upload:", error);
-        // Continue to fallback options
       }
     }
-    
-    // Fallback to HTTP upload URL if R2 direct method isn't available
-    if (!presignedUrl && env.S3_ENDPOINT && env.S3_BUCKET_NAME) {
+    // Fallback to direct S3 URL if configured
+    else if (env.S3_ENDPOINT && env.S3_BUCKET_NAME) {
       try {
         console.log("Using S3/R2 endpoint via direct HTTP");
         
-        // Direct URL to bucket - this is just for development
-        // In production you would properly sign this URL
+        // For development, we use direct URLs without proper signing
         const endpoint = env.S3_ENDPOINT.replace(/\/$/, '');
         const bucket = env.S3_BUCKET_NAME;
         
-        presignedUrl = `${endpoint}/${bucket}/${objectKey}`;
-        method = "HTTP_DIRECT";
+        // Check if we're using a remote endpoint or a local dev server
+        if (endpoint.includes('localhost')) {
+          // For local S3-compatible server, use the endpoint directly
+          presignedUrl = `${endpoint}/${bucket}/${objectKey}`;
+        } else {
+          // For remote endpoints, route through our dev-uploads proxy
+          presignedUrl = `${baseUrl}/api/dev-uploads/${objectKey}`;
+        }
         
-        console.log(`Generated direct bucket URL: ${presignedUrl}`);
+        method = "HTTP_DIRECT";
+        console.log(`Generated upload URL: ${presignedUrl}`);
       } catch (error) {
         console.error("Error generating HTTP upload URL:", error);
       }
     }
     
-    // Final fallback for development
+    // Final fallback for development - always use our dev-uploads endpoint
     if (!presignedUrl) {
-      console.log("Using local development URL");
-      const host = request.headers.get('host') || 'localhost:8788';
-      const protocol = host.includes('localhost') ? 'http' : 'https';
-      presignedUrl = `${protocol}://${host}/api/dev-uploads/${objectKey}`;
+      console.log("Using local development upload endpoint");
+      presignedUrl = `${baseUrl}/api/dev-uploads/${objectKey}`;
       method = "DEV_MODE";
     }
     

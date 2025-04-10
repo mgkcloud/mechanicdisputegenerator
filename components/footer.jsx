@@ -65,7 +65,6 @@ export default function Footer() {
             <h4 className="text-sm font-semibold">Contact</h4>
             <ul className="space-y-2 text-sm">
               <li className="text-muted-foreground">support@mechanicdispute.com.au</li>
-              <li className="text-muted-foreground">1300 123 456</li>
             </ul>
           </div>
         </div>

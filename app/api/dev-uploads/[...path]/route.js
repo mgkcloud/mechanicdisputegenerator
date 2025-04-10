@@ -1,6 +1,19 @@
 import { NextResponse } from "next/server";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 
+// Add CORS preflight handler
+export async function OPTIONS(request) {
+  return new NextResponse(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'PUT, POST, GET, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization, X-Requested-With',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
+}
+
 export async function PUT(request, { params }) {
   const path = params.path?.join('/') || '';
   console.log(`[DEV UPLOADS] Received file upload for path: ${path}`);
@@ -35,12 +48,18 @@ export async function PUT(request, { params }) {
       });
       
       console.log(`[DEV UPLOADS] File stored successfully in R2`);
-      return NextResponse.json({ success: true, message: 'File uploaded successfully to R2' });
+      const response = NextResponse.json({ success: true, message: 'File uploaded successfully to R2' });
+      
+      // Add CORS headers to response
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'PUT, POST, GET, OPTIONS');
+      
+      return response;
     }
     
     // Fallback - in real development you might want to store this locally
     console.log(`[DEV UPLOADS] No storage available, simulating successful upload`);
-    return NextResponse.json({ 
+    const response = NextResponse.json({ 
       success: true, 
       message: 'File upload simulated (no storage available)',
       path: path,
@@ -48,12 +67,24 @@ export async function PUT(request, { params }) {
       contentType: request.headers.get('Content-Type') || 'application/octet-stream'
     });
     
+    // Add CORS headers to response
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'PUT, POST, GET, OPTIONS');
+    
+    return response;
+    
   } catch (error) {
     console.error(`[DEV UPLOADS] Error handling upload:`, error);
-    return NextResponse.json({ 
+    const response = NextResponse.json({ 
       success: false, 
       error: error.message || 'Unknown error' 
     }, { status: 500 });
+    
+    // Add CORS headers even to error responses
+    response.headers.set('Access-Control-Allow-Origin', '*');
+    response.headers.set('Access-Control-Allow-Methods', 'PUT, POST, GET, OPTIONS');
+    
+    return response;
   }
 }
 

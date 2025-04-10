@@ -176,9 +176,9 @@ export default function PricingPage() {
             <p className="mb-8 text-muted-foreground">
               Our team is here to help you choose the right package for your needs.
             </p>
-            <Button variant="outline" asChild>
+            {/* <Button variant="outline" asChild>
               <Link href="/contact">Contact Us</Link>
-            </Button>
+            </Button> */}
           </div>
         </div>
       </section>

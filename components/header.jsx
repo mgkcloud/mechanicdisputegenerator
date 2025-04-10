@@ -10,8 +10,8 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div className="container flex flex-wrap h-24 lg:h-16 p-4 items-around gap-2 justify-between">
+        <div className="flex items-center gap-2 w-full m-auto justify-center lg:justify-start lg:absolute pointer-events-none">
           <Link href="/" className="flex items-center gap-2">
             <div className="rounded-md bg-primary p-1">
               <svg
@@ -36,7 +36,7 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <nav className="hidden md:flex md:items-center md:gap-6">
+        <nav className="flex w-full md:items-center gap-6 justify-center">
           <Link href="/how-it-works" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             How It Works
           </Link>
@@ -46,12 +46,12 @@ export default function Header() {
           <Link href="/faq" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             FAQ
           </Link>
-          <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+          {/* <Link href="/contact" className="text-sm font-medium text-muted-foreground hover:text-foreground">
             Contact
-          </Link>
+          </Link> */}
         </nav>
 
-        <div className="flex items-center gap-4">
+        {/* <div className="flex items-center gap-4">
           <Button variant="primary" className="hidden md:inline-flex">
             Start Your Claim
           </Button>
@@ -64,7 +64,7 @@ export default function Header() {
           >
             {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
-        </div>
+        </div> */}
       </div>
 
       {/* Mobile Navigation */}
@@ -99,9 +99,9 @@ export default function Header() {
             >
               Contact
             </Link>
-            <Button variant="primary" className="mt-2" onClick={() => setIsMenuOpen(false)}>
+            {/* <Button variant="primary" className="mt-2" onClick={() => setIsMenuOpen(false)}>
               Start Your Claim
-            </Button>
+            </Button> */}
           </nav>
         </div>
       )}

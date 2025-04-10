@@ -83,7 +83,7 @@ export default function Step4Payment({
       <div className={`relative z-10 transition-all duration-500 ease-in-out ${
         showFullDocument ? "opacity-0 pointer-events-none payment-modal-exit" : "opacity-100 pointer-events-auto"
       }`}>
-        <div className="mx-auto max-w-2xl bg-white/95 backdrop-blur-sm rounded-xl p-8 shadow-xl border border-border/60 payment-card">
+        <div className="mx-auto max-w-xl bg-white/95 backdrop-blur-sm rounded-xl p-8 shadow-xl border border-border/60 payment-card">
           <div className="mb-8 text-center">
             <h2 className="text-2xl font-bold text-gray-900">Complete Payment</h2>
             <p className="mt-2 text-muted-foreground">

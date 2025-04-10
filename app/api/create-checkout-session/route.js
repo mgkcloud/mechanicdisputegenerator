@@ -1,10 +1,40 @@
-import { NextResponse } from "next/server"
 import Stripe from 'stripe'
 
-// Ensure Stripe is initialized with your secret key
-// It's best practice to use environment variables
+// Initialize Stripe with the fetch HTTP client for Cloudflare Workers compatibility
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2024-06-20', // Use the latest API version
+  httpClient: {
+    // Custom HTTP client implementation using native fetch
+    requestAsync: async (options) => {
+      const url = new URL(options.host);
+      url.pathname = options.path;
+      url.protocol = options.protocol;
+      
+      const fetchOptions = {
+        method: options.method,
+        headers: {
+          'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Stripe-Version': '2024-06-20',
+          ...options.headers,
+        },
+        body: options.body || undefined,
+      };
+      
+      try {
+        const response = await fetch(url.toString(), fetchOptions);
+        const data = await response.json();
+        
+        return {
+          statusCode: response.status,
+          headers: Object.fromEntries(response.headers.entries()),
+          body: JSON.stringify(data)
+        };
+      } catch (error) {
+        throw new Error(`Stripe API request failed: ${error.message}`);
+      }
+    }
+  }
 });
 
 /**
@@ -13,16 +43,23 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
  */
 export async function POST(request) {
   try {
+    console.log("Starting checkout session creation");
     const { filename, productName, amount } = await request.json(); // Expect filename, product name, and amount
 
     if (!filename || !productName || !amount) {
-      return NextResponse.json({ error: 'Missing required parameters (filename, productName, amount)' }, { status: 400 });
+      return new Response(
+        JSON.stringify({ error: 'Missing required parameters (filename, productName, amount)' }), 
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
     // Ensure amount is an integer in the smallest currency unit (e.g., cents)
     const amountInCents = Math.round(parseFloat(amount) * 100);
     if (isNaN(amountInCents) || amountInCents <= 0) {
-      return NextResponse.json({ error: 'Invalid amount' }, { status: 400 });
+      return new Response(
+        JSON.stringify({ error: 'Invalid amount' }), 
+        { status: 400, headers: { 'Content-Type': 'application/json' } }
+      );
     }
 
     // Construct absolute URLs for success and cancel pages
@@ -30,41 +67,52 @@ export async function POST(request) {
     const successUrl = `${origin}/payment-success?session_id={CHECKOUT_SESSION_ID}`;
     const cancelUrl = `${origin}/payment-cancelled`;
 
-    // Create a Stripe Checkout session
-    const session = await stripe.checkout.sessions.create({
-      payment_method_types: ['card'],
-      line_items: [
-        {
-          price_data: {
-            currency: 'aud', // Assuming Australian Dollar
-            product_data: {
-              name: productName,
-              // You could add a description or images here
-            },
-            unit_amount: amountInCents, // Amount in cents
-          },
-          quantity: 1,
-        },
-      ],
-      mode: 'payment',
-      success_url: successUrl,
-      cancel_url: cancelUrl,
-      // Crucially, pass the filename in metadata
-      metadata: {
-        filename: filename,
+    console.log("Creating Stripe checkout session");
+    
+    // Direct implementation using fetch for Cloudflare Workers environment
+    const checkoutResponse = await fetch('https://api.stripe.com/v1/checkout/sessions', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${process.env.STRIPE_SECRET_KEY}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Stripe-Version': '2024-06-20'
       },
-      // Consider collecting billing address if needed for tax/invoicing
-      // billing_address_collection: 'required',
+      body: new URLSearchParams({
+        'payment_method_types[]': 'card',
+        'mode': 'payment',
+        'success_url': successUrl,
+        'cancel_url': cancelUrl,
+        'metadata[filename]': filename,
+        'line_items[0][price_data][currency]': 'aud',
+        'line_items[0][price_data][product_data][name]': productName,
+        'line_items[0][price_data][unit_amount]': amountInCents.toString(),
+        'line_items[0][quantity]': '1'
+      }).toString()
     });
 
+    if (!checkoutResponse.ok) {
+      const errorData = await checkoutResponse.json();
+      console.error("Stripe API error:", errorData);
+      return new Response(
+        JSON.stringify({ error: errorData.error?.message || 'Error creating checkout session' }), 
+        { status: checkoutResponse.status, headers: { 'Content-Type': 'application/json' } }
+      );
+    }
+
+    const session = await checkoutResponse.json();
+    console.log("Session created successfully:", session.id);
+    
     // Return the session ID or URL to the client
-    return NextResponse.json({ sessionId: session.id, url: session.url });
+    return new Response(
+      JSON.stringify({ sessionId: session.id, url: session.url }), 
+      { status: 200, headers: { 'Content-Type': 'application/json' } }
+    );
 
   } catch (error) {
-    console.error("Error creating Stripe checkout session:", error);
-    // Use Stripe's error message if available, otherwise provide a generic one
-    const errorMessage = error.raw?.message || 'Internal Server Error';
-    const statusCode = error.statusCode || 500;
-    return NextResponse.json({ error: errorMessage }, { status: statusCode });
+    console.error("Error creating Stripe checkout session:", error.message, error.stack);
+    return new Response(
+      JSON.stringify({ error: error.message || 'Internal Server Error' }), 
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
   }
 }

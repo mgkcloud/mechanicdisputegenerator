@@ -81,7 +81,7 @@ export default function FAQPage() {
         </Accordion>
       </div>
 
-      <div className="text-center max-w-3xl mx-auto bg-gray-50 rounded-lg p-8">
+      {/* <div className="text-center max-w-3xl mx-auto bg-gray-50 rounded-lg p-8">
         <h2 className="text-2xl font-bold mb-4">Still Have Questions?</h2>
         <p className="mb-6">
           Can't find the answer you're looking for? Please contact our customer support team.
@@ -89,7 +89,7 @@ export default function FAQPage() {
         <Button asChild>
           <Link href="/contact">Contact Us</Link>
         </Button>
-      </div>
+      </div> */}
     </div>
   )
 } 

@@ -674,7 +674,7 @@ export default function HomePage() {
       />
 
       {/* Main Content - Always shown */}
-      <div className="mt-10 sm:mt-16 mb-16 mx-auto px-4 sm:px-6 md:px-8 max-w-4xl">
+      <div className="mt-4 sm:mt-8 mb-16 mx-auto px-4 sm:px-6 md:px-8 max-w-4xl">
         {/* Step Indicator */}
         <StepIndicator currentStep={currentStep} steps={steps} goToStep={goToStep} />
 

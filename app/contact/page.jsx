@@ -168,27 +168,8 @@ export default function ContactPage() {
                 </div>
               </div>
 
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 bg-primary/10 p-2 rounded-md">
-                  <Phone className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-medium">Phone</h3>
-                  <p className="text-gray-600 mt-1">+61 2 1234 5678</p>
-                  <p className="text-gray-600">Mon-Fri, 9am-5pm AEST</p>
-                </div>
-              </div>
+  
 
-              <div className="flex items-start">
-                <div className="mr-4 mt-1 bg-primary/10 p-2 rounded-md">
-                  <MapPin className="h-5 w-5 text-primary" />
-                </div>
-                <div>
-                  <h3 className="font-medium">Office</h3>
-                  <p className="text-gray-600 mt-1">123 Business Street</p>
-                  <p className="text-gray-600">Sydney, NSW 2000</p>
-                </div>
-              </div>
             </CardContent>
           </Card>
 

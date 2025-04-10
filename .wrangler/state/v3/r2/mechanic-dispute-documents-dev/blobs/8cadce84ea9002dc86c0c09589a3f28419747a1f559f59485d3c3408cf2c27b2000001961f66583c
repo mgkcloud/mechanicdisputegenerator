@@ -1,0 +1,82 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter of Demand to Mechanic for awdawd</title>
+    <style>
+      body {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.5;
+        color: #000;
+        margin: 0 auto;
+      }
+      .document-title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #000066;
+      }
+      .document-subtitle {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #000066;
+      }
+      .document-date {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+      .document-header {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #000066;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+      }
+      .document-paragraph {
+        font-size: 12px;
+        text-align: justify;
+        margin-bottom: 10px;
+        text-indent: 20px;
+      }
+      .document-bullet {
+        font-size: 12px;
+        margin-left: 30px;
+        margin-bottom: 5px;
+      }
+      .document-signature {
+        font-size: 12px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      @media print {
+        body {
+          padding: 0;
+        }
+        @page {
+          margin: 2cm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="document-title">LETTER OF DEMAND TO MECHANIC</div>
+    <div class="document-subtitle">For: awdawd</div>
+    <div class="document-date">Date: 10 April 2025</div>
+    
+    <p class="document-paragraph">[Your Name: awdawd]  </p><p class="document-paragraph">[Your Address: undefined]  </p><p class="document-paragraph">[Your Phone: 10000000]  </p><p class="document-paragraph">[Your Email: qwe@asd.com]  </p><p class="document-signature">[Date: 2025-04-18]  </p><p class="document-paragraph">[Mechanic&#039;s Business Name: asdasd]  </p><p class="document-paragraph">[Mechanic&#039;s Address: undefined]  </p><h2 class="document-header">**WITHOUT PREJUDICE**</h2><p class="document-bullet">**Re: Letter of Demand for Vehicle Damage During Servicing**</p><p class="document-paragraph">Dear [Mechanic&#039;s Business Name/Owner&#039;s Name],</p><p class="document-paragraph">I am writing to formally address the issue of damage to my vehicle that occurred while it was in your care for servicing. This letter serves as a Letter of Demand pursuant to my rights under the Australian Consumer Law (ACL).</p><p class="document-bullet">**Timeline of Events:**</p><p class="document-bullet">- On 11 April 2025, I entrusted my vehicle to your workshop for servicing, as documented in your service invoice [Invoice Number: undefined].</p><p class="document-bullet">- Upon collection, I discovered damage to my vehicle described as follows: asdasdasdad.</p><p class="document-paragraph">Under the ACL, specifically sections 60 and 61, service providers are required to render services with due care and skill and must take all necessary precautions to avoid causing loss or damage to a consumer&#039;s property. The damage sustained by my vehicle indicates a failure to meet these statutory guarantees.</p><p class="document-bullet">**Demand for Remedy:**</p><p class="document-paragraph">I am seeking full compensation for the damage caused to my vehicle. This compensation should cover either the full repair costs or the insurance excess required to rectify the damage. Given the lack of an independent quote or insurance claim filed at this time, I reserve the right to provide these details if necessary.</p><p class="document-signature">Please be advised that I am not willing to sign any release of future claims or non-disparagement agreement as a condition for receiving compensation.</p><p class="document-bullet">**Response Deadline:**</p><p class="document-paragraph">I expect a satisfactory response to this demand within 7 days of the date of this letter, by 25 April 2025. Should you fail to respond adequately within this timeframe, I will have no alternative but to escalate this matter to Consumer Affairs Victoria and, if necessary, to the Victorian Civil and Administrative Tribunal (VCAT) for resolution.</p><p class="document-paragraph">I trust that you will address this matter with the seriousness it deserves and look forward to your prompt response.</p><p class="document-paragraph">Yours sincerely,</p><p class="document-signature">[Signature]</p><p class="document-paragraph">awdawd  </p><p class="document-paragraph">[Your Contact Information: Phone: 10000000 | Email: qwe@asd.com]  </p><p class="document-bullet">---</p><p class="document-paragraph">Please ensure this letter is sent via a method that provides proof of delivery, such as registered post or email with a read receipt, to substantiate the timeline and receipt of this communication.</p>
+    
+    <script>
+      // Optional: Auto-print when loaded
+      // window.onload = function() { window.print(); };
+    </script>
+  </body>
+  </html>
+  
