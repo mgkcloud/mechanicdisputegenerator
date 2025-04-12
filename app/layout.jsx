@@ -15,7 +15,11 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" })
 export const metadata = {
   title: "Australian Mechanic Dispute Resolution",
   description: "Generate professional legal documents for resolving disputes with mechanics in Australia",
-    generator: 'v0.dev'
+    icons: {
+      icon: [
+        { url: '/favicon.svg', type: 'image/svg+xml' }
+      ]
+    }
 }
 
 export default function RootLayout({ children }) {
