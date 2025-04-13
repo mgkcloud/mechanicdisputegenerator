@@ -1,10 +1,33 @@
 import React from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { getBaseUrl, generateOpenGraph, generateTwitterCard } from "@/lib/metadataUtils"
+import { generateWebPageSchema, generateJsonLd } from "@/lib/schema"
+
+const pageTitle = "Privacy Policy | Australian Mechanic Dispute Resolution";
+const pageDescription = "Review the Mechanic Dispute Resolution privacy policy. Learn how we collect, use, store, and protect your personal information when you use our service.";
 
 export const metadata = {
-  title: "Privacy Policy | Mechanic Dispute",
-  description: "Learn how Mechanic Dispute collects, uses, and protects your personal information."
+  title: pageTitle,
+  description: pageDescription,
+  keywords: ["privacy policy", "data protection", "personal information", "data security", "mechanic dispute service privacy", "Australia", "user privacy"],
+  openGraph: generateOpenGraph({
+    title: pageTitle,
+    description: pageDescription,
+    url: `${getBaseUrl()}/privacy`,
+    type: 'website'
+  }),
+  twitter: generateTwitterCard({
+    title: pageTitle,
+    description: pageDescription
+  }),
+  jsonLd: generateJsonLd([
+    generateWebPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: `${getBaseUrl()}/privacy`,
+    })
+  ])
 }
 
 export default function PrivacyPage() {
@@ -112,9 +135,7 @@ export default function PrivacyPage() {
         </p>
         <p>
           Email: privacy@mechanicdispute.com.au<br />
-          Phone: +61 2 1234 5678<br />
-          Address: 123 Business Street, Sydney, NSW 2000, Australia
-        </p>
+         </p>
       </div>
 
       <div className="mt-12 border-t pt-8">

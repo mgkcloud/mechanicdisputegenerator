@@ -1,0 +1,107 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Consumer Complaint Schema (Australia)",
+  "description": "Schema for data used to generate an Australian Consumer Complaint to a state body regarding a mechanic dispute.",
+  "type": "object",
+  "allOf": [
+    { "$ref": "base-document.schema.json" }
+  ],
+  "properties": {
+    "documentType": {
+      "const": "consumer_complaint"
+    },
+    "vehicleDetails": {
+      "description": "Details about the vehicle involved, extending base schema.",
+      "allOf": [ { "$ref": "base-document.schema.json#/properties/vehicleDetails" } ],
+      "properties": {
+        "vin": { "type": "string", "description": "Vehicle Identification Number (VIN)." }
+      }
+    },
+    "incidentDetails": {
+      "description": "Details about the service incident, extending base schema.",
+      "allOf": [ { "$ref": "base-document.schema.json#/properties/incidentDetails" } ],
+      "properties": {
+        "description": { "type": "string", "description": "Detailed narrative of what happened during the service and the issue that arose." },
+        "costPaid": { "type": "number", "description": "Total amount paid for the service in question." },
+        "paymentMethod": { "type": "string", "description": "Method used for payment (e.g., Credit Card, Cash, Bank Transfer)." }
+      },
+      "required": ["description"]
+    },
+    "complaintDetails": {
+      "description": "Specifics of the complaint being lodged.",
+      "type": "object",
+      "properties": {
+        "complaintType": {
+          "type": "string",
+          "enum": ["damage_caused", "poor_service", "overcharging", "unapproved_repairs", "misleading_conduct", "other"],
+          "description": "The primary nature of the complaint."
+        },
+        "specificIssueDescription": { "type": "string", "description": "Detailed explanation of the problem and why it breaches consumer rights/guarantees." },
+        "supportingEvidence": {
+          "type": "array",
+          "description": "List of evidence supporting the complaint.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": { 
+                "type": "string", 
+                "enum": ["receipt", "invoice", "photo", "video", "email", "letter", "report", "witness_statement", "other"],
+                "description": "Type of evidence."
+              },
+              "description": { "type": "string", "description": "Brief description of the evidence item (e.g., 'Photos of scratches on door', 'Invoice #123')." },
+              "date": { "type": "string", "format": "date", "description": "Date associated with the evidence, if applicable." }
+            },
+            "required": ["type", "description"]
+          }
+        }
+      },
+      "required": ["complaintType", "specificIssueDescription"]
+    },
+    "resolutionAttempts": {
+      "description": "Details of attempts made to resolve the issue directly with the business.",
+      "type": "object",
+      "properties": {
+        "contactAttempts": {
+          "type": "array",
+          "description": "Chronological list of contacts made with the business regarding this issue.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "date": { "type": "string", "format": "date" },
+              "method": { 
+                "type": "string", 
+                "enum": ["phone", "email", "letter", "in_person", "other"],
+                "description": "How the contact was made."
+              },
+              "contactPerson": { "type": "string", "description": "Name of the person spoken to, if known." },
+              "summary": { "type": "string", "description": "Brief summary of the conversation or correspondence." }
+            },
+            "required": ["date", "method", "summary"]
+          }
+        },
+        "businessResponseSummary": { "type": "string", "description": "Overall summary of the business's final position or response after attempts to resolve." },
+        "previousOutcome": { "type": "string", "description": "The outcome of the direct resolution attempts (e.g., 'refused refund', 'offered partial repair', 'no response')." }
+      },
+      "required": ["contactAttempts", "businessResponseSummary", "previousOutcome"]
+    },
+    "desiredOutcome": {
+      "description": "The outcome the complainant is seeking through this formal complaint process.",
+      "type": "object",
+      "properties": {
+        "outcomeType": {
+          "type": "string",
+          "enum": ["refund", "repair", "replacement", "compensation", "cancellation", "apology", "other"],
+          "description": "The primary type of resolution sought."
+        },
+        "outcomeDetails": { "type": "string", "description": "Specific details of the desired outcome (e.g., 'Repair the damaged paintwork on the driver-side door at no cost to me')." },
+        "desiredAmount": { "type": "number", "description": "Specific monetary amount sought, if applicable (e.g., for refund or compensation)." }
+      },
+      "required": ["outcomeType", "outcomeDetails"]
+    }
+  },
+  "required": [
+    "complaintDetails",
+    "resolutionAttempts",
+    "desiredOutcome"
+  ]
+} 

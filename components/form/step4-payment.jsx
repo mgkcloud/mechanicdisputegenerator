@@ -109,17 +109,17 @@ export default function Step4Payment({
 
             {/* Payment Summary */}
             <div className="space-y-2">
-              <div className="flex justify-between py-1">
+              {/* <div className="flex justify-between py-1">
                 <span>Document Fee</span>
                 <span>{formatCurrency(49.99)}</span>
-              </div>
-              <div className="flex justify-between py-1">
+              </div> */}
+              {/* <div className="flex justify-between py-1">
                 <span>GST (10%)</span>
                 <span>{formatCurrency(49.99 * 0.1)}</span>
-              </div>
+              </div> */}
               <div className="flex justify-between py-1 font-semibold border-t border-border/60 mt-2 pt-2">
                 <span>Total</span>
-                <span>{formatCurrency(49.99 * 1.1)}</span>
+                <span>{formatCurrency(49.99)}</span>
               </div>
             </div>
           </div>

@@ -18,7 +18,7 @@ export default function StepIndicator({ steps, currentStep, goToStep }) {
             key={step.id}
             className={`flex flex-1 cursor-pointer items-center justify-center border-b-2 p-4 text-sm font-medium transition-all duration-200 ${
               currentStep === step.id
-                ? "border-primary text-primary"
+                ? "border-b-4 border-primary font-semibold text-primary bg-primary/10"
                 : currentStep > step.id
                   ? "border-success text-success"
                   : "border-transparent text-muted-foreground"

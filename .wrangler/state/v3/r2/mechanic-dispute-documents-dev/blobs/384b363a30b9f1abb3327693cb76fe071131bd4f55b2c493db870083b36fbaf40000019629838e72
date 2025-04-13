@@ -1,0 +1,82 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter of Demand to Mechanic for Will</title>
+    <style>
+      body {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.5;
+        color: #000;
+        margin: 0 auto;
+      }
+      .document-title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #000066;
+      }
+      .document-subtitle {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #000066;
+      }
+      .document-date {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+      .document-header {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #000066;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+      }
+      .document-paragraph {
+        font-size: 12px;
+        text-align: justify;
+        margin-bottom: 10px;
+        text-indent: 20px;
+      }
+      .document-bullet {
+        font-size: 12px;
+        margin-left: 30px;
+        margin-bottom: 5px;
+      }
+      .document-signature {
+        font-size: 12px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      @media print {
+        body {
+          padding: 0;
+        }
+        @page {
+          margin: 2cm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="document-title">LETTER OF DEMAND TO MECHANIC</div>
+    <div class="document-subtitle">For: Will</div>
+    <div class="document-date">Date: 12 April 2025</div>
+    
+    <p class="document-paragraph">[Your Name: Will]  </p><p class="document-paragraph">[Your Address: [Your Address]]  </p><p class="document-paragraph">[Phone: [Your Phone]]  </p><p class="document-paragraph">[Email: wia@asd.com]  </p><p class="document-signature">[Date: [Today&#039;s Date]]  </p><p class="document-paragraph">[Business Name: asd]  </p><p class="document-paragraph">[Business Address: [Business Address]]  </p><p class="document-paragraph">Dear Sir/Madam,</p><p class="document-bullet">**Re: Letter of Demand for Vehicle Damage during Servicing**</p><p class="document-paragraph">I am writing to formally demand compensation for the damage incurred to my vehicle while it was in your care for servicing on 20 September 9999. This letter is issued in accordance with my rights under the Australian Consumer Law (ACL), which mandates that services be provided with due care and skill.</p><p class="document-bullet">**Timeline of Events:**</p><p class="document-paragraph">1. **Vehicle Drop-off:** On 20 September 9999, I entrusted my vehicle, a [Vehicle Make, Model, Year, Registration], to your workshop for servicing.</p><p class="document-paragraph">2. **Discovery of Damage:** Upon retrieval of my vehicle, I discovered the following damage: asdasdasdasdasd.</p><p class="document-paragraph">Under the ACL, service providers are required to exercise due care and skill and take all necessary precautions to avoid loss or damage to a consumer&#039;s property. The damage to my vehicle indicates a failure to meet this legal obligation.</p><p class="document-bullet">**Remedy Sought:**</p><p class="document-signature">I demand full compensation for the damage caused to my vehicle. This may be in the form of either the repair cost or the insurance excess, should I choose to file a claim. Please note that I am not willing to sign any release of future claims or non-disparagement agreement as a condition of receiving this compensation.</p><p class="document-bullet">**Deadline for Response:**</p><p class="document-paragraph">I expect a satisfactory response within 7 days from the date of this letter. Failing this, I will have no option but to escalate the matter to Consumer Affairs Victoria and, if necessary, pursue the matter further with the Victorian Civil and Administrative Tribunal (VCAT).</p><p class="document-paragraph">I trust that you will address this matter with the seriousness it deserves and look forward to your prompt response.</p><p class="document-paragraph">Yours sincerely,</p><p class="document-signature">[Your Signature (if sending a hard copy)]  </p><p class="document-paragraph">[Your Name: Will]  </p><p class="document-bullet">---</p><p class="document-paragraph">Please ensure that you fill in any placeholders with the relevant information before sending the letter. This document is intended to facilitate a resolution in line with your rights under Australian Consumer Law.</p>
+    
+    <script>
+      // Optional: Auto-print when loaded
+      // window.onload = function() { window.print(); };
+    </script>
+  </body>
+  </html>
+  

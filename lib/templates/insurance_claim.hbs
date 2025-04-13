@@ -1,0 +1,85 @@
+{{! Document: Insurance Claim Support Letter (Australia) }}
+{{! Template uses Handlebars.js syntax and assumes data structure from our Zod schemas. }}
+
+{{! --- Sender Details ---}}
+{{senderInfo.name}}
+{{#if senderInfo.address}}{{senderInfo.address}}{{/if}}
+{{#if senderInfo.phone}}Ph: {{senderInfo.phone}}{{/if}}
+{{#if senderInfo.email}}E: {{senderInfo.email}}{{/if}}
+
+{{! --- Date ---}}
+{{formatDate metadata.generatedDate}}
+
+{{! --- Insurance Company Details ---}}
+{{#if remedyDetails.insuranceDetails.insurer}}{{remedyDetails.insuranceDetails.insurer}}{{else}}[Insurance Company Name]{{/if}}
+{{#if remedyDetails.insuranceDetails.claimNumber}}Claim Number: {{remedyDetails.insuranceDetails.claimNumber}}{{else}}[Your Claim/Policy Reference]{{/if}}
+
+**RE: SUPPORT FOR INSURANCE CLAIM – Vehicle Damage Caused During Mechanical Service**
+
+To Whom It May Concern,
+
+**CLAIM DETAILS AND STATUTORY WARRANTY PROTECTION**
+
+I am writing regarding my insurance claim for damage to my vehicle that occurred while in the care of {{recipientInfo.name}} (the repairer). This letter provides formal documentation as required under the Australian Financial Complaints Authority (AFCA) Scheme Rule 523 and references my consumer rights under the Australian Consumer Law (ACL) statutory warranties.
+
+**VEHICLE AND REPAIR IDENTIFICATION**
+- Make: {{vehicleDetails.make}}
+- Model: {{vehicleDetails.model}}
+- Year: {{vehicleDetails.year}}
+- Registration: {{vehicleDetails.registration}}
+- VIN: [Vehicle Identification Number]
+- Repair Invoice #: [Invoice Number]
+- Service Date: {{formatDate incidentDetails.serviceDate}}
+
+**INCIDENT DETAILS AND DOCUMENTED EVIDENCE:**
+{{#if incidentNarrative.text}}
+{{{incidentNarrative.text}}}
+{{else}}
+On {{formatDate incidentDetails.serviceDate}}, I brought my vehicle to {{recipientInfo.name}} for servicing. When I collected the vehicle, I discovered damage that was not present when I left the vehicle in their care.
+
+The damage consists of {{incidentDetails.disputedDamageDescription}}.
+{{/if}}
+
+**CONSUMER GUARANTEES BREACHED (ACL SECTION 60):**
+{{#if legalBasis.summaryText}}
+{{{legalBasis.summaryText}}}
+{{else}}
+Under the Australian Consumer Law (Schedule 2 of the Competition and Consumer Act 2010), {{recipientInfo.name}} breached the consumer guarantee to provide services with due care and skill (Section 60). As a bailee for reward, the repairer also violated their common law duty to protect my property while in their possession. These are non-excludable guarantees that apply regardless of any contractual terms.
+{{/if}}
+
+**ACTIONS TAKEN AND SUPPORTING EVIDENCE:**
+1. I immediately notified {{recipientInfo.name}} of the damage on {{formatDate incidentDetails.serviceDate}} and documented the issues with time-stamped, geotagged photographs.
+
+2. I sent a formal letter of demand on {{formatDate metadata.generatedDate}} under ACL Section 259, requesting they accept liability for the damage.
+
+3. {{#if remedyDetails.demandAmount}}I have obtained an independent repair quote for {{formatCurrency remedyDetails.demandAmount}} from an Australian Automotive Aftermarket Association (AAAA) accredited repairer.{{/if}}
+
+4. {{#if incidentDetails.preServiceEvidenceAvailable}}I have provided evidence of the vehicle's undamaged condition prior to service through pre-service inspection photographs.{{/if}}
+
+**INSURANCE CLAIM REQUEST:**
+I request that my insurance claim be processed with the understanding that:
+
+1. The damage occurred while the vehicle was in the care of {{recipientInfo.name}}, who had both statutory and common law duties of care.
+
+2. I did not contribute to or cause the damage in any way, satisfying the "no fault" criteria under Insurance Contracts Act 1984 and General Insurance Code of Practice Clause 74.
+
+3. I have taken reasonable steps to seek direct recovery from the responsible party as required by my policy conditions.
+
+4. This claim should be processed without affecting my No Claim Bonus as it falls under the "not-at-fault" category per the ASIC RG 275 guidelines.
+
+I understand your rights of subrogation under Insurance Contracts Act 1984 Section 67 and will fully cooperate with any recovery action against {{recipientInfo.name}}.
+
+**ATTACHED DOCUMENTATION:**
+- Letter of demand sent to {{recipientInfo.name}}
+- Time-stamped photographs of damage
+{{#if remedyDetails.demandAmount}}- Independent repair assessment and quote{{/if}}
+- Service invoice and payment receipt
+{{#if incidentDetails.preServiceEvidenceAvailable}}- Pre-service condition evidence{{/if}}
+
+Please process my claim promptly in accordance with the timeframes specified in the General Insurance Code of Practice. 
+
+Yours faithfully,
+
+
+{{senderInfo.name}}
+Policy Number: [Your Policy Number] 

@@ -1,0 +1,78 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Base Document Schema",
+  "description": "Common structure for all generated legal documents in Australia.",
+  "type": "object",
+  "properties": {
+    "documentType": {
+      "description": "Type of the document being generated.",
+      "type": "string",
+      "enum": ["letter_of_demand", "consumer_complaint"]
+    },
+    "state": {
+        "description": "The Australian state or territory relevant to the document (e.g., for determining relevant consumer bodies or courts).",
+        "type": "string",
+        "enum": ["VIC", "NSW", "QLD", "WA", "SA", "TAS", "ACT", "NT"]
+    },
+    "senderInfo": {
+      "description": "Information about the sender (customer).",
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "address": {"type": "string"},
+        "phone": {"type": "string"},
+        "email": {"type": "string", "format": "email"}
+      },
+      "required": ["name", "email"]
+    },
+    "recipientInfo": {
+      "description": "Information about the recipient (mechanic/business).",
+      "type": "object",
+      "properties": {
+        "name": {"type": "string"},
+        "address": {"type": "string"},
+        "abn": {"type": "string"},
+        "contactPerson": {"type": "string"}
+      },
+      "required": ["name"]
+    },
+    "vehicleDetails": {
+        "description": "Details about the customer's vehicle involved in the dispute.",
+        "type": "object",
+        "properties": {
+            "make": {"type": "string"},
+            "model": {"type": "string"},
+            "year": {"type": "integer"},
+            "registration": {"type": "string"}
+        },
+        "required": ["make", "model", "registration"]
+    },
+    "incidentDetails": {
+        "description": "Core details about the incident leading to the dispute.",
+        "type": "object",
+        "properties": {
+             "serviceDate": {"type": "string", "format": "date", "description": "Date the vehicle was serviced."}
+        },
+        "required": ["serviceDate"]
+    },
+    "metadata": {
+      "description": "Metadata about the document generation process.",
+      "type": "object",
+      "properties": {
+        "generatedDate": {"type": "string", "format": "date-time"},
+        "schemaVersion": {"type": "string", "const": "1.0.0"},
+        "generationId": {"type": "string"}
+      },
+      "required": ["generatedDate", "schemaVersion"]
+    }
+  },
+  "required": [
+    "documentType",
+    "state",
+    "senderInfo",
+    "recipientInfo",
+    "vehicleDetails",
+    "incidentDetails",
+    "metadata"
+  ]
+} 

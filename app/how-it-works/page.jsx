@@ -3,10 +3,33 @@ import Link from "next/link"
 import { ArrowLeft, FileText, Upload, CheckCircle, CreditCard, Download } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { getBaseUrl, generateOpenGraph, generateTwitterCard } from "@/lib/metadataUtils"
+import { generateWebPageSchema, generateJsonLd } from "@/lib/schema"
+
+const pageTitle = "How It Works | Australian Mechanic Dispute Resolution";
+const pageDescription = "Learn our simple 5-step process to generate legal documents and effectively resolve disputes with your mechanic in Australia.";
 
 export const metadata = {
-  title: "How It Works | Mechanic Dispute",
-  description: "Learn how our streamlined process helps you resolve mechanic disputes easily and effectively."
+  title: pageTitle,
+  description: pageDescription,
+  keywords: ["how it works", "mechanic dispute process", "steps", "resolve car repair dispute", "generate legal documents", "Australia"],
+  openGraph: generateOpenGraph({
+    title: pageTitle,
+    description: pageDescription,
+    url: `${getBaseUrl()}/how-it-works`,
+    type: 'website'
+  }),
+  twitter: generateTwitterCard({
+    title: pageTitle,
+    description: pageDescription
+  }),
+  jsonLd: generateJsonLd([
+    generateWebPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: `${getBaseUrl()}/how-it-works`,
+    })
+  ])
 }
 
 export default function HowItWorksPage() {

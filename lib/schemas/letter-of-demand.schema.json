@@ -1,0 +1,165 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Letter of Demand Schema (Australia)",
+  "description": "Schema for data used to generate an Australian Letter of Demand to a mechanic.",
+  "type": "object",
+  "allOf": [
+    { "$ref": "base-document.schema.json" }
+  ],
+  "properties": {
+    "documentType": {
+      "const": "letter_of_demand"
+    },
+    "incidentDetails": {
+      "description": "Detailed information about the incident and damages.",
+      "allOf": [
+        { "$ref": "base-document.schema.json#/properties/incidentDetails" }
+      ],
+      "properties": {
+        "timelineEvents": {
+          "type": "array",
+          "description": "Chronological sequence of events related to the service and damage.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "timestamp": {"type": "string", "description": "Time of event (e.g., '7:30 AM') - Optional"},
+              "description": {"type": "string", "description": "Description of the event."}
+            },
+            "required": ["description"]
+          },
+          "minItems": 1
+        },
+        "originalServiceCost": {
+            "type": "number",
+            "description": "The initial agreed cost for the service requested."
+        },
+        "finalInvoiceAmount": {
+            "type": "number", 
+            "description": "The final amount charged on the invoice from the mechanic."
+        },
+        "declinedRepairCost": {
+            "type": "number",
+            "description": "Estimated cost of repairs suggested by the mechanic that the customer declined."
+        },
+        "acknowledgedDamageDescription": {
+            "type": "string", 
+            "description": "Description of any damage the mechanic acknowledged causing or existing."
+        },
+        "disputedDamageDescription": {
+            "type": "string", 
+            "description": "Description of the damage the customer claims the mechanic caused and is disputing."
+        },
+        "preServiceEvidenceAvailable": {
+            "type": "boolean", 
+            "description": "Does the customer have photos/videos of the vehicle's condition immediately before the service?"
+        },
+        "calculatedResponseDate": {
+            "type": "string", 
+            "format": "date", 
+            "description": "The calculated date by which the recipient must respond (usually based on escalationDetails.responseDeadlineDays)."
+        }
+      },
+      "required": ["timelineEvents", "disputedDamageDescription", "calculatedResponseDate"]
+    },
+    "paymentDetails": {
+      "description": "Details regarding payment made for the service, especially if under protest.",
+      "type": "object",
+      "properties": {
+        "paymentMadeUnderProtest": {
+            "type": "boolean",
+            "description": "Was the final invoice paid under protest to retrieve the vehicle?"
+        },
+        "protestedInvoiceAmount": {
+            "type": "number",
+            "description": "The amount paid under protest."
+        },
+        "invoiceNumber": {
+            "type": "string",
+            "description": "Invoice number, if available."
+        },
+        "paymentDate": {
+            "type": "string",
+            "format": "date",
+            "description": "Date the payment under protest was made."
+        }
+      },
+      "if": {
+          "properties": { "paymentMadeUnderProtest": { "const": true } }
+      },
+      "then": {
+          "required": ["protestedInvoiceAmount", "paymentDate"]
+      }
+    },
+    "remedyDetails": {
+      "description": "Details about the demanded compensation or remedy.",
+      "type": "object",
+      "properties": {
+        "insuranceDetails": {
+          "description": "Customer's car insurance information, if relevant to the claim.",
+          "type": "object",
+          "properties": {
+            "insurer": {"type": "string"},
+            "claimNumber": {"type": "string", "description": "Claim number, if a claim has been lodged."},
+            "excessAmount": {"type": "number", "description": "The insurance excess amount."}
+          },
+          "required": ["insurer", "excessAmount"]
+        },
+        "demandType": {
+          "type": "string",
+          "description": "The primary type of compensation being demanded.",
+          "enum": ["excessReimbursement", "fullRepairCost", "other"]
+        },
+        "demandAmount": {
+            "type": "number", 
+            "description": "The specific monetary amount being demanded."
+        },
+        "alternativeRemedyOffered": {
+          "type": "string",
+          "description": "Any alternative resolution offered by the customer in the letter.",
+          "enum": ["fullRepairCost", "negotiate", "none"],
+          "default": "none"
+        }
+      },
+      "required": ["demandType"],
+      "if": {
+          "properties": { "demandType": { "enum": ["excessReimbursement", "fullRepairCost"] } }
+      },
+      "then": {
+          "required": ["demandAmount"]
+      }
+    },
+    "legalBasis": {
+      "description": "The legal foundation for the demand (typically AI-generated).",
+      "type": "object",
+      "properties": {
+        "summaryText": {
+            "type": "string", 
+            "description": "A concise summary of the legal grounds for the claim (e.g., breach of ACL guarantees)."}
+      },
+      "required": ["summaryText"]
+    },
+    "escalationDetails": {
+      "description": "Information about the next steps if the demand is not met.",
+      "type": "object",
+      "properties": {
+        "escalationBody": {
+          "type": "string", 
+          "description": "The intended body for escalation (e.g., VCAT, NCAT).",
+          "enum": ["VCAT", "NCAT", "QCAT", "SAT", "ACAT", "NTCAT", "Magistrates Court", "Other"]
+        },
+        "responseDeadlineDays": {
+            "type": "integer", 
+            "description": "Number of business days given for the recipient to respond.",
+            "default": 10
+        }
+      },
+      "required": ["escalationBody", "responseDeadlineDays"]
+    }
+  },
+  "required": [
+    "incidentDetails",
+    "remedyDetails",
+    "legalBasis",
+    "escalationDetails"
+  ]
+} 

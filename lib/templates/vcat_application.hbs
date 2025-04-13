@@ -1,0 +1,98 @@
+{{! Document: VCAT Application Guide (Australia) }}
+{{! Template uses Handlebars.js syntax and assumes data structure from our Zod schemas. }}
+
+**VCAT APPLICATION GUIDANCE**
+
+**Case Type:**
+Consumer and trader dispute under the Australian Consumer Law
+
+**Tribunal:**
+{{#if state}}
+{{#if (eq state "VIC")}}Victorian Civil and Administrative Tribunal (VCAT)
+{{else if (eq state "NSW")}}NSW Civil and Administrative Tribunal (NCAT)
+{{else if (eq state "QLD")}}Queensland Civil and Administrative Tribunal (QCAT)
+{{else if (eq state "SA")}}South Australian Civil and Administrative Tribunal (SACAT)
+{{else if (eq state "WA")}}State Administrative Tribunal of Western Australia (SAT)
+{{else if (eq state "TAS")}}Tasmanian Civil and Administrative Tribunal (TASCAT)
+{{else if (eq state "ACT")}}ACT Civil and Administrative Tribunal (ACAT)
+{{else if (eq state "NT")}}Northern Territory Civil and Administrative Tribunal (NTCAT)
+{{else}}Relevant state administrative tribunal
+{{/if}}
+{{else}}Victorian Civil and Administrative Tribunal (VCAT)
+{{/if}}
+
+**Applicant Details:**
+{{senderInfo.name}}
+{{#if senderInfo.address}}{{senderInfo.address}}{{/if}}
+{{#if senderInfo.phone}}Phone: {{senderInfo.phone}}{{/if}}
+{{#if senderInfo.email}}Email: {{senderInfo.email}}{{/if}}
+
+**Respondent Details:**
+{{recipientInfo.name}}
+{{#if recipientInfo.address}}{{recipientInfo.address}}{{/if}}
+{{#if recipientInfo.abn}}ABN: {{recipientInfo.abn}}{{/if}}
+
+**Claim Amount:**
+{{#if remedyDetails.demandAmount}}{{formatCurrency remedyDetails.demandAmount}}{{else}}To be determined{{/if}}
+{{#if remedyDetails.insuranceDetails.excessAmount}}(Insurance excess: {{formatCurrency remedyDetails.insuranceDetails.excessAmount}}){{/if}}
+
+**Claim Details:**
+
+**What Happened:**
+{{#if incidentNarrative.text}}
+{{{incidentNarrative.text}}}
+{{else}}
+On {{formatDate incidentDetails.serviceDate}}, I took my {{vehicleDetails.year}} {{vehicleDetails.make}} {{vehicleDetails.model}} to {{recipientInfo.name}} for servicing. When I collected the vehicle, I discovered damage that was not present when I left the vehicle in their care.
+
+The damage consists of {{incidentDetails.disputedDamageDescription}}.
+{{/if}}
+
+{{#if remedyDetails.demandAmount}}I have obtained a repair quote of {{formatCurrency remedyDetails.demandAmount}}.{{/if}}
+
+**Legal Basis for Claim:**
+{{#if legalBasis.summaryText}}
+{{{legalBasis.summaryText}}}
+{{else}}
+Under the Australian Consumer Law (ACL), services must be provided with due care and skill. This is a consumer guarantee that cannot be excluded. The ACL requires that a service provider must take all necessary care to avoid loss or damage to the consumer's property.
+
+By damaging my vehicle while it was in their care, {{recipientInfo.name}} has failed to meet this guarantee.
+{{/if}}
+
+**Steps Taken to Resolve:**
+{{#if timelineEvents}}
+{{#each timelineEvents}}
+{{@index}}. {{this.description}}{{#if this.timestamp}} on {{formatDate this.timestamp}}{{/if}}
+{{/each}}
+{{else}}
+1. I immediately notified the business of the damage after collection.
+2. I sent a formal letter of demand on {{formatDate metadata.generatedDate}} requesting compensation for the repair costs.
+3. The business has not satisfactorily resolved this matter.
+{{/if}}
+
+**Evidence to Bring to Hearing:**
+- Photos of the damage
+- Service invoice and proof of payment
+{{#if remedyDetails.demandAmount}}- Independent repair quote{{/if}}
+- Copy of letter of demand
+{{#if incidentDetails.preServiceEvidenceAvailable}}- Evidence of vehicle condition before service{{/if}}
+- Timeline of events
+{{#if remedyDetails.insuranceDetails.insurer}}- Insurance claim details (Insurer: {{remedyDetails.insuranceDetails.insurer}}, Claim #: {{remedyDetails.insuranceDetails.claimNumber}}){{/if}}
+
+**What to Expect at the Tribunal:**
+1. The hearing will be relatively informal
+2. You will present your case first, then the mechanic will respond
+3. The Tribunal member may ask questions of both parties
+4. Bring three copies of all documents (one for you, one for the mechanic, one for the Tribunal)
+5. Speak clearly and stick to the facts
+6. Focus on how the mechanic breached the consumer guarantee of due care and skill
+
+**Possible Outcomes:**
+If successful, the Tribunal may order the mechanic to pay you compensation for the repair costs. If unsuccessful, you may be required to pay the mechanic's filing fee.
+
+**Filing Fee:**
+For claims up to $3,000: approximately $72
+For claims up to $15,000: approximately $240
+(Fee waivers may be available in certain circumstances)
+
+**Time Limit:**
+Applications must generally be made within 6 years of the incident, but it's best to file as soon as possible. 

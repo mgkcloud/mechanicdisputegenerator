@@ -1,0 +1,82 @@
+
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter of Demand to Mechanic for Will</title>
+    <style>
+      body {
+        font-family: 'Times New Roman', Times, serif;
+        line-height: 1.5;
+        color: #000;
+        margin: 0 auto;
+      }
+      .document-title {
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 5px;
+        color: #000066;
+      }
+      .document-subtitle {
+        text-align: center;
+        font-size: 16px;
+        margin-bottom: 20px;
+        color: #000066;
+      }
+      .document-date {
+        text-align: right;
+        font-size: 12px;
+        color: #666;
+        margin-bottom: 30px;
+      }
+      .document-header {
+        font-size: 14px;
+        font-weight: bold;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        color: #000066;
+        border-bottom: 1px solid #eee;
+        padding-bottom: 5px;
+      }
+      .document-paragraph {
+        font-size: 12px;
+        text-align: justify;
+        margin-bottom: 10px;
+        text-indent: 20px;
+      }
+      .document-bullet {
+        font-size: 12px;
+        margin-left: 30px;
+        margin-bottom: 5px;
+      }
+      .document-signature {
+        font-size: 12px;
+        margin-top: 30px;
+        margin-bottom: 30px;
+      }
+      @media print {
+        body {
+          padding: 0;
+        }
+        @page {
+          margin: 2cm;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="document-title">LETTER OF DEMAND TO MECHANIC</div>
+    <div class="document-subtitle">For: Will</div>
+    <div class="document-date">Date: 12 April 2025</div>
+    
+    <p class="document-paragraph">[Your Name: Will]  </p><p class="document-paragraph">[Your Address]  </p><p class="document-paragraph">[City, State, Postcode]  </p><p class="document-paragraph">[Phone: ]  </p><p class="document-paragraph">[Email: wia@asd.com]  </p><p class="document-signature">[Date: 2023-10-15]  </p><p class="document-paragraph">[Business Name: asd]  </p><p class="document-paragraph">[Business Address]  </p><p class="document-paragraph">Dear [Mechanic&#039;s Name or Business Manager],</p><p class="document-bullet">**Re: Letter of Demand for Vehicle Damage During Servicing**</p><p class="document-paragraph">I am writing to formally demand compensation for damage that occurred to my vehicle while it was in your care for servicing on 20th September 9999. This letter serves as a formal notice under the Australian Consumer Law (ACL), which mandates that services must be provided with due care and skill.</p><p class="document-bullet">**Timeline of Events:**</p><p class="document-paragraph">1. **Vehicle Drop-off:** My vehicle was delivered to your premises on 20th September 9999 for servicing.</p><p class="document-paragraph">2. **Damage Discovery:** Upon retrieval of my vehicle, I discovered the following damage: asdasdasdasdasd.</p><p class="document-paragraph">Under the ACL, service providers are required to perform services with due care and skill, taking all necessary precautions to avoid damage to the consumer&#039;s property. It is evident that this obligation has not been met, resulting in damage to my vehicle. </p><p class="document-bullet">**Consumer Rights Under Australian Consumer Law:**</p><p class="document-paragraph">The ACL stipulates that services must be rendered with due care and skill (Section 60), and a failure to do so constitutes a breach of consumer guarantees. By damaging my vehicle, your business has failed to uphold this guarantee, and I am entitled to seek remedies for this breach.</p><p class="document-bullet">**Demand for Remedy:**</p><p class="document-paragraph">I am seeking full compensation for the repair costs associated with the damage to my vehicle. As of this date, I have not obtained an independent quote nor filed an insurance claim, but the expectation is for your business to cover the full cost of repairs.</p><p class="document-signature">Please note that I am not willing to sign any release of future claims or non-disparagement agreement as part of the resolution process.</p><p class="document-bullet">**Deadline for Response:**</p><p class="document-signature">I require a written response within 7 days of the date of this letter, confirming your agreement to cover the repair costs. Failure to respond satisfactorily by [Date: 2023-10-22] will result in my escalating this matter to Consumer Affairs Victoria and, if necessary, pursuing the matter through the Victorian Civil and Administrative Tribunal (VCAT).</p><p class="document-paragraph">I trust this matter can be resolved amicably and promptly. Please contact me directly at [Phone: ] or [Email: wia@asd.com] to discuss the necessary arrangements for compensation.</p><p class="document-paragraph">Yours sincerely,</p><p class="document-signature">[Signature]</p><p class="document-paragraph">Will  </p><p class="document-paragraph">[Your Name]  </p><p class="document-bullet">---</p><p class="document-paragraph">Please ensure all placeholders such as addresses, dates, and names are filled with the appropriate information before sending this letter.</p>
+    
+    <script>
+      // Optional: Auto-print when loaded
+      // window.onload = function() { window.print(); };
+    </script>
+  </body>
+  </html>
+  

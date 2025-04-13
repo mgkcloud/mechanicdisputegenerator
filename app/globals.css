@@ -263,3 +263,55 @@
   transform: scale(1);
   transition: all 0.5s ease-in-out;
 }
+
+/* Custom Neumorphic Input Styles */
+@layer components {
+  .neumorphic-input {
+    @apply w-full rounded-md bg-[#F0F5F9] px-3 py-2 text-sm text-foreground shadow-none transition-all duration-200 ease-in-out placeholder:text-muted-foreground focus:outline-none;
+    border: none; /* Ensure no default border interferes */
+    box-shadow: inset 2px 2px 5px #d1d9e6, inset -3px -3px 7px #ffffff; /* Inner shadow for depth */
+  }
+
+  .neumorphic-input:focus {
+     /* Slightly change shadow on focus */
+    box-shadow: inset 3px 3px 7px #d1d9e6, inset -4px -4px 9px #ffffff;
+  }
+
+  /* Style for error state - uses a border for clarity */
+  .neumorphic-input-error {
+    @apply border border-destructive shadow-none ring-1 ring-destructive; /* Add red border and remove neumorphic shadow */
+    background-color: theme('colors.destructive / 0.05'); /* Optional: slight red background tint */
+  }
+
+   /* Remove default browser appearance for select */
+  select.neumorphic-input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-chevron-down' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 1em;
+    padding-right: 2.5rem; /* Make space for arrow */
+  }
+}
+
+/* Additions for form validation error highlighting */
+@keyframes throb {
+  0% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); /* Equivalent to red-600 with opacity */
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(220, 38, 38, 0);
+  }
+}
+
+.input-error-throb {
+  animation: throb 1.5s ease-out;
+  border-color: hsl(var(--destructive)); /* Ensure border is also red */
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.4); /* Initial red ring */
+}
+/* End additions */

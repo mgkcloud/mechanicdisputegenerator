@@ -125,11 +125,12 @@ async function getFileFromHTTP(caseId, photoId, env) {
 /**
  * API route to retrieve a photo
  */
-export async function GET(request, { params }) {
-  // Extract caseId and photoId from params
-  const { caseId, photoId } = params;
-  
+export async function GET(request, context) {
   try {
+    // Await params before accessing its properties (Next.js 15 requirement)
+    const params = await context.params;
+    const { caseId, photoId } = params;
+    
     if (!caseId || !photoId) {
       return NextResponse.json(
         {

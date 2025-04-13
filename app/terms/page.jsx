@@ -1,10 +1,33 @@
 import React from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { getBaseUrl, generateOpenGraph, generateTwitterCard } from "@/lib/metadataUtils"
+import { generateWebPageSchema, generateJsonLd } from "@/lib/schema"
+
+const pageTitle = "Terms of Service | Australian Mechanic Dispute Resolution";
+const pageDescription = "Read the terms and conditions for using the Mechanic Dispute Resolution service. Understand user responsibilities, limitations, and governing law.";
 
 export const metadata = {
-  title: "Terms of Service | Mechanic Dispute",
-  description: "Terms and conditions for using the Mechanic Dispute resolution service."
+  title: pageTitle,
+  description: pageDescription,
+  keywords: ["terms of service", "conditions", "mechanic dispute service terms", "user agreement", "governing law", "Australia"],
+  openGraph: generateOpenGraph({
+    title: pageTitle,
+    description: pageDescription,
+    url: `${getBaseUrl()}/terms`,
+    type: 'website'
+  }),
+  twitter: generateTwitterCard({
+    title: pageTitle,
+    description: pageDescription
+  }),
+  jsonLd: generateJsonLd([
+    generateWebPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: `${getBaseUrl()}/terms`,
+    })
+  ])
 }
 
 export default function TermsPage() {
@@ -84,9 +107,7 @@ export default function TermsPage() {
         </p>
         <p>
           Email: support@mechanicdispute.com.au<br />
-          Phone: +61 2 1234 5678<br />
-          Address: 123 Business Street, Sydney, NSW 2000, Australia
-        </p>
+          </p>
       </div>
 
       <div className="mt-12 border-t pt-8">

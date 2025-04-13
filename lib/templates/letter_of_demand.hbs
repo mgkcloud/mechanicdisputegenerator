@@ -1,0 +1,68 @@
+{{! Document: Letter of Demand (Australia) }}
+{{! Template uses Handlebars.js syntax and assumes data structure from our JSON schemas. }}
+
+{{! --- Sender Details ---}}
+{{senderInfo.name}}
+{{#if senderInfo.address}}{{senderInfo.address}}{{/if}}
+{{#if senderInfo.phone}}Ph: {{senderInfo.phone}}{{/if}}
+{{#if senderInfo.email}}E: {{senderInfo.email}}{{/if}}
+
+{{! --- Date ---}}
+{{formatDate metadata.generatedDate}}
+
+{{! --- Recipient Details ---}}
+{{recipientInfo.name}}
+{{#if recipientInfo.address}}{{recipientInfo.address}}{{/if}}
+{{#if recipientInfo.abn}}ABN: {{recipientInfo.abn}}{{/if}}
+
+**VIA EMAIL AND REGISTERED POST** 
+
+**RE: LETTER OF DEMAND – Damage to Vehicle {{vehicleDetails.registration}} During Service on {{formatDate incidentDetails.serviceDate}}**
+
+Dear {{#if recipientInfo.contactPerson}}{{recipientInfo.contactPerson}}{{else}}Sir/Madam{{/if}},
+
+I am writing to formally demand compensation for damage allegedly caused to my vehicle, a {{vehicleDetails.year}} {{vehicleDetails.make}} {{vehicleDetails.model}} (Registration: {{vehicleDetails.registration}}), while it was in the care and custody of your workshop for service on or around {{formatDate incidentDetails.serviceDate}}.
+
+**Background:**
+{{#if incidentNarrative.text}}
+{{{incidentNarrative.text}}} {{! Use triple braces for potentially HTML-formatted AI text }}
+{{else}}
+[Detailed narrative of the incident, including service requested, condition before service, damage discovered, and timeline, should be inserted here. AI generation failed or section missing.]
+{{/if}}
+
+**Legal Responsibility:**
+{{#if legalBasis.summaryText}}
+{{{legalBasis.summaryText}}} {{! Use triple braces }}
+{{else}}
+[Summary of legal basis, referencing Australian Consumer Law guarantees (due care and skill) and bailment principles, should be inserted here. AI generation failed or section missing.]
+{{/if}}
+
+{{#if paymentDetails.paymentMadeUnderProtest}}
+**Payment Under Protest:**
+Please note that the service invoice{{#if paymentDetails.invoiceNumber}} (Invoice No: {{paymentDetails.invoiceNumber}}){{/if}} for {{formatCurrency paymentDetails.protestedInvoiceAmount}} was paid on {{formatDate paymentDetails.paymentDate}} **under protest**. This payment was made solely to secure the release of my vehicle due to the assertion of a repairer's lien and does not constitute acceptance of the service quality, agreement with the charges, or waiver of my rights regarding the damage caused while the vehicle was in your care.
+{{/if}}
+
+**Demand for Compensation:**
+{{#if remedyStatement.text}}
+{{{remedyStatement.text}}} {{! Use triple braces }}
+{{else}}
+[Clear statement demanding specific compensation (e.g., payment for repair costs, insurance excess reimbursement) should be inserted here. AI generation failed or section missing.]
+{{/if}}
+
+**Deadline and Further Action:**
+{{#if escalationText.text}}
+{{{escalationText.text}}} {{! Use triple braces }}
+{{else}}
+[Statement setting a deadline for response (e.g., 10 business days) and outlining intended escalation steps (e.g., lodging complaint with state consumer affairs body, initiating proceedings in relevant tribunal like VCAT/NCAT/QCAT) should be inserted here. AI generation failed or section missing.]
+You are required to provide written confirmation of your agreement to resolve this matter as demanded within 10 business days from the date of this letter (i.e., by {{formatDate incidentDetails.calculatedResponseDate}}).
+
+If I do not receive a satisfactory response by {{formatDate incidentDetails.calculatedResponseDate}}, I will escalate this matter without further notice. This may include lodging a formal complaint with the relevant state consumer protection agency (e.g., Consumer Affairs {{state}}) and initiating legal proceedings against {{recipientInfo.name}} in the appropriate tribunal or court (e.g., {{escalationDetails.escalationBody}}) to recover all losses, including repair costs, insurance excess (if applicable), potential increases in premiums, and associated legal costs.
+{{/if}}
+
+I trust this matter can be resolved amicably and promptly.
+
+Yours faithfully,
+
+
+{{senderInfo.name}}
+Owner of Vehicle {{vehicleDetails.registration}} 

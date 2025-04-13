@@ -1,10 +1,33 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { CheckCircle, X } from "lucide-react"
+import { getBaseUrl, generateOpenGraph, generateTwitterCard } from "@/lib/metadataUtils"
+import { generateWebPageSchema, generateJsonLd } from "@/lib/schema"
+
+const pageTitle = "Pricing - Legal Documents for Mechanic Disputes Australia";
+const pageDescription = "View our simple, one-time pricing for generating letters of demand and complete packages to resolve mechanic disputes in Australia. No hidden fees.";
 
 export const metadata = {
-  title: "Pricing | Australian Mechanic Dispute Resolution",
-  description: "Simple, transparent pricing for our legal document generation service",
+  title: pageTitle,
+  description: pageDescription,
+  keywords: ["pricing", "cost", "mechanic dispute documents", "letter of demand price", "legal document generation", "Australia", "VCAT guidance cost"],
+  openGraph: generateOpenGraph({
+    title: pageTitle,
+    description: pageDescription,
+    url: `${getBaseUrl()}/pricing`,
+    type: 'website'
+  }),
+  twitter: generateTwitterCard({
+    title: pageTitle,
+    description: pageDescription
+  }),
+  jsonLd: generateJsonLd([
+    generateWebPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: `${getBaseUrl()}/pricing`,
+    })
+  ])
 }
 
 export default function PricingPage() {

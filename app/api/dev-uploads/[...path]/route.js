@@ -14,7 +14,9 @@ export async function OPTIONS(request) {
   });
 }
 
-export async function PUT(request, { params }) {
+export async function PUT(request, context) {
+  // Await params before accessing its properties (Next.js 15 requirement)
+  const params = await context.params;
   const path = params.path?.join('/') || '';
   console.log(`[DEV UPLOADS] Received file upload for path: ${path}`);
   

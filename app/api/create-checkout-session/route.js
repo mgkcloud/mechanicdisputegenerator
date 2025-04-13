@@ -80,6 +80,7 @@ export async function POST(request) {
       body: new URLSearchParams({
         'payment_method_types[]': 'card',
         'mode': 'payment',
+        'allow_promotion_codes': 'true',
         'success_url': successUrl,
         'cancel_url': cancelUrl,
         'metadata[filename]': filename,

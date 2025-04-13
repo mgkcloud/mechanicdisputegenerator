@@ -1,10 +1,33 @@
 import React from "react"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
+import { getBaseUrl, generateOpenGraph, generateTwitterCard } from "@/lib/metadataUtils"
+import { generateWebPageSchema, generateJsonLd } from "@/lib/schema"
+
+const pageTitle = "Disclaimer | Australian Mechanic Dispute Resolution";
+const pageDescription = "Read the legal disclaimer for Mechanic Dispute Resolution. Understand the scope of our service, limitations of liability, and user responsibilities.";
 
 export const metadata = {
-  title: "Disclaimer | Mechanic Dispute",
-  description: "Important legal notices and disclaimers regarding the use of Mechanic Dispute services."
+  title: pageTitle,
+  description: pageDescription,
+  keywords: ["disclaimer", "legal notice", "mechanic dispute service limitations", "not legal advice", "limitation of liability", "Australia"],
+  openGraph: generateOpenGraph({
+    title: pageTitle,
+    description: pageDescription,
+    url: `${getBaseUrl()}/disclaimer`,
+    type: 'website'
+  }),
+  twitter: generateTwitterCard({
+    title: pageTitle,
+    description: pageDescription
+  }),
+  jsonLd: generateJsonLd([
+    generateWebPageSchema({
+      name: pageTitle,
+      description: pageDescription,
+      url: `${getBaseUrl()}/disclaimer`,
+    })
+  ])
 }
 
 export default function DisclaimerPage() {
@@ -78,9 +101,7 @@ export default function DisclaimerPage() {
         </p>
         <p>
           Email: legal@mechanicdispute.com.au<br />
-          Phone: +61 2 1234 5678<br />
-          Address: 123 Business Street, Sydney, NSW 2000, Australia
-        </p>
+         </p>
       </div>
 
       <div className="mt-12 border-t pt-8">
