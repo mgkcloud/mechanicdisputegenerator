@@ -6,12 +6,12 @@ import { htmlToDocx } from "@/lib/docx-converter";
 /**
  * API route to download a document in different formats
  * @param {Request} request - The incoming request
- * @param {Object} context - Route parameters
- * @param {Object} context.params - Contains the filename
+ * @param {Object} context - The context object.
+ * @param {{ filename: string }} context.params - The route parameters.
  */
-export async function GET(request, context) {
+export async function GET(request, { params }) {
   try {
-    const { filename } = context.params;
+    const { filename } = params;
     const searchParams = new URL(request.url).searchParams;
     const format = searchParams.get("format") || "pdf";
     

@@ -1,0 +1,42 @@
+{
+  "document_type": "letter_of_demand",
+  "state": "VIC",
+  "customer_name": "wll var",
+  "customer_email": "will@ton.com",
+  "customer_phone": "",
+  "customer_address": "",
+  "mechanic_name": "Ritter",
+  "mechanic_abn": "",
+  "mechanic_address": "23 asdasd, fsd 1322",
+  "vehicle_details": "2004 ranger rover ",
+  "service_date": "4233-03-31",
+  "incident_date": "3233-02-23",
+  "damage_description": "sdfsdfsdfsdfsdf",
+  "acknowledged_damage_description": "",
+  "pre_service_evidence_available": "false",
+  "previous_communication_summary": "",
+  "timelineEvents": [],
+  "remedyDetails": {
+    "demandType": "fullRepairCost",
+    "demandAmount": "1230",
+    "alternativeRemedyOffered": "",
+    "insuranceDetails": {
+      "insurer": "",
+      "claimNumber": "",
+      "excessAmount": ""
+    },
+    "demandOtherDetails": ""
+  },
+  "escalationDetails": {
+    "responseDeadlineDays": "14",
+    "escalationBody": "VCAT",
+    "paymentMadeUnderProtest": false
+  },
+  "repair_cost": "",
+  "insurance_claim": "no",
+  "insurance_excess": "",
+  "insurance_claim_number": "",
+  "evidence_0": "Screenshot_9-4-2025_93831_localhost.jpeg",
+  "evidence_0_type": "image/jpeg",
+  "evidence_0_url": "/api/get-photo/case_46eb212d/photo_609adf66"
+}

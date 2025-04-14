@@ -1,0 +1,42 @@
+{
+  "document_type": "letter_of_demand",
+  "state": "VIC",
+  "customer_name": "Will Varnryy",
+  "customer_email": "we@sdf.com",
+  "customer_phone": "",
+  "customer_address": "",
+  "mechanic_name": "Rserser",
+  "mechanic_abn": "",
+  "mechanic_address": "234 sdfsdf, dfg 1322",
+  "vehicle_details": "2998 Range Rvger Srt ",
+  "service_date": "5233-06-23",
+  "incident_date": "3342-02-23",
+  "damage_description": "shaed at the dront aand raear",
+  "acknowledged_damage_description": "",
+  "pre_service_evidence_available": "false",
+  "previous_communication_summary": "",
+  "timelineEvents": [],
+  "remedyDetails": {
+    "demandType": "fullRepairCost",
+    "demandAmount": "1300",
+    "alternativeRemedyOffered": "",
+    "insuranceDetails": {
+      "insurer": "",
+      "claimNumber": "",
+      "excessAmount": ""
+    },
+    "demandOtherDetails": ""
+  },
+  "escalationDetails": {
+    "responseDeadlineDays": "14",
+    "escalationBody": "VCAT",
+    "paymentMadeUnderProtest": false
+  },
+  "repair_cost": "",
+  "insurance_claim": "no",
+  "insurance_excess": "",
+  "insurance_claim_number": "",
+  "evidence_0": "Screenshot_9-4-2025_93831_localhost.jpeg",
+  "evidence_0_type": "image/jpeg",
+  "evidence_0_url": "/api/get-photo/case_6d649374/photo_4c10d23b"
+}

@@ -23,6 +23,17 @@ const nextConfig = {
       type: 'json'
     });
 
+    // Fix Handlebars require.extensions warning
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      handlebars: 'handlebars/dist/handlebars.min.js',
+    };
+
+    // Ignore the require.extensions warning for Handlebars
+    config.ignoreWarnings = [
+      { module: /node_modules\/handlebars\/lib\/index\.js/ }
+    ];
+
     // Important: return the modified config
     return config;
   },

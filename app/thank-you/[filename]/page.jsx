@@ -1,160 +1,28 @@
-import { getDocumentTypeName } from "@/lib/thank-you"
-import Link from "next/link"
+// This is now a Server Component
 
-// Metadata for the page
+import React from 'react';
+// Import the new Client Component
+import ThankYouClientContent from './thank-you-client'; // Use relative path
+
+// Metadata export is allowed in Server Components
 export const metadata = {
   title: "Document Confirmation | Australian Mechanic Dispute Resolution",
   description: "Thank you for generating your legal document for Australian mechanic disputes.",
 }
 
-/**
- * Get document metadata for the server-side props
- * @param {string} filename - Document filename
- */
-async function getDocumentMetadata(filename) {
-  try {
-    // In a real app, you would fetch metadata from your database or storage
-    // For now, we'll just return a basic object
+// Optional: If you need to fetch server-side data for the metadata or page,
+// you could do it here, but the current metadata is static.
+// async function getPageData(filename) { ... }
 
-    // Try to extract document type from filename
-    let documentType = "legal_document"
-    if (filename.includes("letter_of_demand")) {
-      documentType = "letter_of_demand"
-    } else if (filename.includes("consumer_complaint")) {
-      documentType = "consumer_complaint"
-    } else if (filename.includes("vcat_application")) {
-      documentType = "vcat_application"
-    } else if (filename.includes("insurance_claim")) {
-      documentType = "insurance_claim"
-    }
+// Server Component: Renders the Client Component and passes data
+// Mark the component as async to allow awaiting params if needed by Next.js
+export default async function ThankYouPage({ params }) {
+  // Destructure filename from params, awaiting as suggested by the error
+  const resolvedParams = await params;
+  const { filename } = resolvedParams;
 
-    return {
-      customerName: "Valued Customer", // In a real app, you would get this from storage metadata
-      documentType,
-      generatedDate: new Date().toISOString(),
-    }
-  } catch (error) {
-    console.error(`Error fetching document metadata for ${filename}:`, error)
-    return {
-      customerName: "Valued Customer",
-      documentType: "legal_document",
-      generatedDate: new Date().toISOString(),
-    }
-  }
-}
+  // Any server-side logic or data fetching would go here
 
-/**
- * Thank You page component
- * Displays a thank you message and document details after successful payment
- * 
- * @param {Object} props - Component props
- * @param {Promise<Object>} props.params - Route params
- * @param {string} props.params.filename - Document filename
- */
-export default async function ThankYouPage(props) {
-  const params = await props.params
-  const { filename } = params
-
-  // Get document metadata
-  const metadata = await getDocumentMetadata(filename)
-
-  // URLs for viewing and downloading document - prettier URLs without 'api'
-  const permanentUrl = `/documents/view/${filename}`
-  const downloadUrl = `/documents/download/${filename}`
-
-  // Format the date for display
-  const date = new Date().toLocaleDateString("en-AU", {
-    weekday: "long",
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  })
-
-  // Get user-friendly document type name
-  const documentTypeName = getDocumentTypeName(metadata.documentType)
-
-  return (
-    <>
-      <header className="bg-[#0D2750] text-white py-10 px-4 text-center shadow-lg">
-        <div className="container mx-auto max-w-7xl">
-          <h1 className="text-4xl font-bold mb-4 tracking-tight">Australian Mechanic Dispute Resolution</h1>
-          <p className="text-xl">Thank you for using our service</p>
-        </div>
-      </header>
-
-      <main className="container mx-auto max-w-7xl py-8 px-4">
-        <div className="card">
-          <h2 className="text-2xl font-bold mb-6 text-[#0D2750]">Your Document Is Ready!</h2>
-          <div className="alert alert-success">
-            <p>
-              <strong>Success!</strong> Your document has been generated and permanently stored.
-            </p>
-          </div>
-
-          <p className="mb-4">Dear {metadata.customerName},</p>
-          <p className="mb-6">
-            Your {documentTypeName} has been successfully created on {date}. You can access your document using the
-            links below at any time.
-          </p>
-
-          <div className="bg-white p-8 rounded-xl shadow-lg mb-8">
-            <h3 className="text-xl font-semibold mb-4">Document Details</h3>
-
-            <div className="p-6 rounded-xl mb-4 bg-[#E8EAEC] shadow-inner flex flex-col md:flex-row items-center">
-              <div className="text-4xl text-[#3498db] mr-6">📄</div>
-              <div className="flex-grow">
-                <div className="font-bold mb-2">View Your Document Online</div>
-                <p className="mb-2">
-                  You can view your document in your browser at any time using this permanent link:
-                </p>
-                <div className="font-mono bg-gray-100 p-2 rounded-md text-sm break-all">{permanentUrl}</div>
-              </div>
-              <div className="mt-4 md:mt-0 md:ml-4">
-                <Link href={permanentUrl} target="_blank" className="btn">
-                  View
-                </Link>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-xl mb-4 bg-[#E8EAEC] shadow-inner flex flex-col md:flex-row items-center">
-              <div className="text-4xl text-[#3498db] mr-6">⬇️</div>
-              <div className="flex-grow">
-                <div className="font-bold mb-2">Download Your Document</div>
-                <p className="mb-2">You can download a copy of your document to save on your device:</p>
-                <div className="font-mono bg-gray-100 p-2 rounded-md text-sm break-all">{downloadUrl}</div>
-              </div>
-              <div className="mt-4 md:mt-0 md:ml-4">
-                <Link href={downloadUrl} className="btn" download>
-                  Download
-                </Link>
-              </div>
-            </div>
-          </div>
-
-          <h3 className="text-xl font-semibold mb-4">What's Next?</h3>
-          <p className="mb-4">Here are the recommended steps to take with your document:</p>
-          <ol className="list-decimal ml-8 mb-6">
-            <li className="mb-2">Review your document carefully to ensure all details are correct</li>
-            <li className="mb-2">Print a copy for your records</li>
-            <li className="mb-2">Send the document to the mechanic via registered mail or email</li>
-            <li className="mb-2">Keep track of all communication with the mechanic</li>
-            <li className="mb-2">Follow up after the specified response deadline</li>
-          </ol>
-
-          <Link href="/" className="btn">
-            Create Another Document
-          </Link>
-        </div>
-      </main>
-
-      <footer className="bg-[#0D2750] text-white py-10 px-4 text-center mt-16 shadow-inner">
-        <div className="container mx-auto max-w-7xl">
-          <p className="mb-2">
-            &copy; {new Date().getFullYear()} Australian Mechanic Dispute Resolution. All rights reserved.
-          </p>
-          <p>This service provides legal document templates and is not a substitute for professional legal advice.</p>
-        </div>
-      </footer>
-    </>
-  )
+  // Render the Client Component, passing the destructured filename
+  return <ThankYouClientContent originalFilename={filename} />;
 }

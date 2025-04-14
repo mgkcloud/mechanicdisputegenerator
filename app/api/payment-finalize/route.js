@@ -13,7 +13,8 @@ export async function GET(request) {
 
   try {
     // Set the cookie to clear localStorage on the client-side
-    await cookies().set("clear_form_storage", "true", { 
+    const cookieStore = await cookies(); // Await cookies() first
+    await cookieStore.set("clear_form_storage", "true", { 
       maxAge: 60, // Short expiry (seconds)
       path: "/",
       httpOnly: false, // Needs to be readable by client-side JS

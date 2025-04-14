@@ -1,0 +1,42 @@
+{
+  "document_type": "letter_of_demand",
+  "state": "VIC",
+  "customer_name": "Will Varney",
+  "customer_email": "will@outlook.com",
+  "customer_phone": "",
+  "customer_address": "",
+  "mechanic_name": "Ritter Australia",
+  "mechanic_abn": "",
+  "mechanic_address": "15 Workshop Street, Bawlwyn Nroth 4122",
+  "vehicle_details": "2006 Range Rover Sport Reg: 123efd",
+  "service_date": "2025-04-13",
+  "incident_date": "2025-04-13",
+  "damage_description": "Smashed on the front and left back panels as well as the rear bumper",
+  "acknowledged_damage_description": "",
+  "pre_service_evidence_available": "true",
+  "previous_communication_summary": "",
+  "timelineEvents": [],
+  "remedyDetails": {
+    "demandType": "fullRepairCost",
+    "demandAmount": "1200",
+    "alternativeRemedyOffered": "",
+    "insuranceDetails": {
+      "insurer": "",
+      "claimNumber": "",
+      "excessAmount": ""
+    },
+    "demandOtherDetails": ""
+  },
+  "escalationDetails": {
+    "responseDeadlineDays": "14",
+    "escalationBody": "VCAT",
+    "paymentMadeUnderProtest": false
+  },
+  "repair_cost": "",
+  "insurance_claim": "no",
+  "insurance_excess": "",
+  "insurance_claim_number": "",
+  "evidence_0": "Screenshot_9-4-2025_93831_localhost.jpeg",
+  "evidence_0_type": "image/jpeg",
+  "evidence_0_url": "/api/get-photo/case_6cff31e2/photo_636df96f"
+}
