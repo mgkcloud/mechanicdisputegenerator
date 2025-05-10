@@ -3,10 +3,8 @@ main = ".open-next/worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 
-# Assets configuration - correct format for static assets
+# Assets configuration - modern format
 [assets]
-browser_TTL = 60
-serve_single_page_app = true
 directory = ".open-next/assets"
 
 # Configure custom domain

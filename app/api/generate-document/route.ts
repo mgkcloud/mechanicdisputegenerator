@@ -106,7 +106,7 @@ export async function POST(req: Request) {
 
     // Save the input data (JSON) - with isolated error handling
     try {
-      const inputFilename = `${document.filename}.input.json`;
+      const inputFilename = `${document.filename}.json`;
       const jsonString = JSON.stringify(jsonData, null, 2);
       
       console.log(`\n------ INPUT JSON SAVE ATTEMPT ------`);
@@ -116,8 +116,11 @@ export async function POST(req: Request) {
       
       await storeDocument(document.filename, jsonString, {
         contentType: "application/json",
-        format: "input.json",
-        metadata: { originalDocument: document.filename }
+        format: "json",
+        metadata: { 
+          originalDocument: document.filename,
+          inputData: true
+        }
       });
       
       // Verify it was saved using the full filename

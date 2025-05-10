@@ -51,6 +51,13 @@ const nextConfig = {
         }.toString())
       })
     );
+
+    // Rule for .hbs files removed
+    // config.module.rules.push({
+    //   test: /\.hbs$/,
+    //   use: 'raw-loader',
+    // });
+
     return config;
   },
   

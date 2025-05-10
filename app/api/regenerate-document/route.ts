@@ -49,7 +49,7 @@ export async function POST(req: Request) {
     }
 
     // Derive the filename where the input data is stored
-    const inputDataFilename = `${originalFilename}.input.json`;
+    const inputDataFilename = `${originalFilename}.json`;
     
     // Log regeneration request prominently
     console.log(`\n=============================================`);
@@ -67,14 +67,15 @@ export async function POST(req: Request) {
       console.log(`Input data fetch result for ${inputDataFilename}: ${storedInputJson ? 'SUCCESS' : 'NOT FOUND'}`);
       
       if (!storedInputJson) {
-        // If input data isn't found, it could be that our previous fix hasn't been applied to this file yet
-        // Try the old format as a fallback (without .input.json)
-        const alternativeFilename = `${originalFilename}.json`;
+        // Try the old format as a fallback (with .input.json)
+        const alternativeFilename = `${originalFilename}.input.json`;
         console.log(`Trying alternative input filename: ${alternativeFilename}`);
         storedInputJson = await getDocument(alternativeFilename);
         console.log(`Alternative input fetch result: ${storedInputJson ? 'SUCCESS' : 'NOT FOUND'}`);
         
         if (!storedInputJson) {
+          // If still not found, check for any double extension issues
+          console.error(`⚠️ No input JSON found for document: ${originalFilename}`);
           throw new ApiError(`Input data not found for ${originalFilename}. Tried both ${inputDataFilename} and ${alternativeFilename}`, 404);
         }
       }

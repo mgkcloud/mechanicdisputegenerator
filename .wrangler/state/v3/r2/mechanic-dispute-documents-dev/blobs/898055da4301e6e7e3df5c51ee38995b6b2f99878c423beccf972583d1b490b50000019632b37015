@@ -1,0 +1,42 @@
+{
+  "document_type": "letter_of_demand",
+  "state": "VIC",
+  "customer_name": "Taka Rachi.",
+  "customer_email": "wkll@sdf.com",
+  "customer_phone": "",
+  "customer_address": "",
+  "mechanic_name": "sdfsd",
+  "mechanic_abn": "",
+  "mechanic_address": "23 rer st,dfg 312",
+  "vehicle_details": "2333 dugr charger",
+  "service_date": "3333-04-12",
+  "incident_date": "3333-03-31",
+  "damage_description": "asdasdasdasdasdasd",
+  "acknowledged_damage_description": "",
+  "pre_service_evidence_available": "false",
+  "previous_communication_summary": "",
+  "timelineEvents": [],
+  "remedyDetails": {
+    "demandType": "fullRepairCost",
+    "demandAmount": "1300",
+    "alternativeRemedyOffered": "",
+    "insuranceDetails": {
+      "insurer": "",
+      "claimNumber": "",
+      "excessAmount": ""
+    },
+    "demandOtherDetails": ""
+  },
+  "escalationDetails": {
+    "responseDeadlineDays": "14",
+    "escalationBody": "VCAT",
+    "paymentMadeUnderProtest": false
+  },
+  "repair_cost": "",
+  "insurance_claim": "no",
+  "insurance_excess": "",
+  "insurance_claim_number": "",
+  "evidence_0": "Screenshot_9-4-2025_93831_localhost.jpeg",
+  "evidence_0_type": "image/jpeg",
+  "evidence_0_url": "/api/get-photo/case_0145d5cd/photo_460b8674"
+}

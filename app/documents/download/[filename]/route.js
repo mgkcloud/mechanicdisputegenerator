@@ -6,12 +6,13 @@ import { handleApiError, ApiError } from "@/lib/error-utils"
  * Route handler for document downloads
  * @param {Request} request - The incoming request
  * @param {Object} context - Context containing params
- * @param { { params: { filename: string } } } context - Context containing params
+ * @param {Promise<Object>} context.params - Route params
  * @param {string} context.params.filename - Document filename
  */
 export async function GET(request, { params }) {
   try {
-    const { filename } = params
+    // Await the params Promise to get the actual values
+    const { filename } = await params
     
     if (!filename) {
       throw new ApiError("Filename is required", 400)
